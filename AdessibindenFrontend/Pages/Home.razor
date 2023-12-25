@@ -1,7 +1,85 @@
 ﻿@page "/"
+@inject IColorService _colorService;
+@inject IAuthService _authService;
+@using AdessibindenFrontend.Helpers.Results
+@using AdessibindenFrontend.Services.Abstract
+@using Application.Features.Auth.Commands.Login
+@using Application.Features.Colors.Queries.GetAll
+@using Core.Application.Dtos
+@using Core.Application.Responses
+@using Domain.Models
 
-<PageTitle>Home</PageTitle>
+@if (IsProcessing){
+    <p>Loading...</p>
+}
+else{
 
-<h1>Hello, world!</h1>
+    @foreach(var item in colorResponse.Items)
+    {
+        <div>
+            <h1>@item.Name</h1>
+        </div>
+    }
 
-Welcome to your new app.
+    <EditForm Model="credentials" OnValidSubmit="LoginUser">
+
+
+           <div class="py-2">
+                <InputText @bind-Value="credentials.Email" id="email" placeholder="Email..." class="form-control mb-2" />
+        </div>
+        <div class="py-2">
+        <InputText @bind-Value="credentials.Password" type="password" placeholder="Password..." id="password" class="form-control mb-2" />
+        </div>
+        <div class="py-2">
+            <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-bounding-box"></i> Sign in</button>
+            <a href="/register" class="btn btn-primary text-white m-2"><i class="bi bi-person-plus-fill"></i> Register as a new user</a>
+        </div>
+   
+    </EditForm>
+    
+    if (IsLogged)
+    {
+        <div>
+            <p >@loggedResponse.Message </p>
+        </div>
+    }
+
+}
+
+
+
+@code{
+    public bool IsProcessing { get; set; } = false;
+    public bool IsLogged { get; set; } = false;
+    public GetListResponse<GetAllColorsListItemDto> colorResponse;
+    public IDataResult<LoggedResponse> loggedResponse;
+    public UserForLoginDto credentials = new()
+        {
+            Email = "emre@emre",
+            Password = "1234"
+        };
+
+    protected async override Task OnInitializedAsync()
+    {
+        IsProcessing = true;
+
+        colorResponse = await _colorService.GetAll();
+
+
+
+        IsProcessing = false;
+    }
+
+    private async Task LoginUser()
+    {
+        IsProcessing = true;
+
+        loggedResponse = await _authService.Login(credentials);
+        
+        IsLogged = true;
+        
+        IsProcessing = false;
+
+    }
+
+}
