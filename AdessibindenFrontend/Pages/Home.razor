@@ -1,20 +1,20 @@
 ﻿@page "/"
-@inject IColorService _colorService;
-@inject IAuthService _authService;
-@using AdessibindenFrontend.Helpers.Results
+@using AdessibindenFrontend.Services
 @using AdessibindenFrontend.Services.Abstract
 @using Application.Features.Auth.Commands.Login
 @using Application.Features.Colors.Queries.GetAll
 @using Core.Application.Dtos
 @using Core.Application.Responses
-@using Domain.Models
+@inject IColorService _colorService;
+@inject IAuthService _authService;
+
 
 @if (IsProcessing){
     <p>Loading...</p>
 }
 else{
 
-    @foreach(var item in colorResponse.Items)
+    @foreach(var item in colorResponse.Data.Items)
     {
         <div>
             <h1>@item.Name</h1>
@@ -51,8 +51,8 @@ else{
 @code{
     public bool IsProcessing { get; set; } = false;
     public bool IsLogged { get; set; } = false;
-    public GetListResponse<GetAllColorsListItemDto> colorResponse;
-    public IDataResult<LoggedResponse> loggedResponse;
+    public RequestResult<GetListResponse<GetAllColorsListItemDto>> colorResponse;
+    public RequestResult<LoggedResponse> loggedResponse;
     public UserForLoginDto credentials = new()
         {
             Email = "emre@emre",
@@ -63,7 +63,7 @@ else{
     {
         IsProcessing = true;
 
-        colorResponse = await _colorService.GetAll();
+        colorResponse = await _colorService.GetAll(0,10);
 
 
 

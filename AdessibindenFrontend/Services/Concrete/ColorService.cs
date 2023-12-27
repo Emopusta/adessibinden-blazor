@@ -15,11 +15,11 @@ namespace AdessibindenFrontend.Services.Concrete
             _httpClient = httpClient;
         }
         
-        public async Task<GetListResponse<GetAllColorsListItemDto>> GetAll()
+        public async Task<RequestResult<GetListResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize)
         {
 
 
-            var response = await _httpClient.GetFromJsonAsync<GetListResponse<GetAllColorsListItemDto>>("/api/Colors?PageIndex=0&PageSize=10");
+            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetListResponse<GetAllColorsListItemDto>>>($"/api/Colors?PageIndex={pageIndex}&PageSize={pageSize}");
 
             return response;
 
