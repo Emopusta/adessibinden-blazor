@@ -4,6 +4,7 @@ using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Core.Application.Dtos;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace AdessibindenFrontend.Services.Concrete
@@ -17,11 +18,15 @@ namespace AdessibindenFrontend.Services.Concrete
         {
             _httpClient = httpClient;
         }
-        public async Task<RequestResult<LoggedResponse>> Login(UserForLoginDto credentials)
+
+        public async Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials)
         {
             
             var response = await _httpClient.PostAsJsonAsync("/api/Auth/Login", credentials);
             var result = response.Content.ReadFromJsonAsync<RequestResult<LoggedResponse>>().Result;
+            if (result.Data != null) {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
+            }
             return result;
 
         }

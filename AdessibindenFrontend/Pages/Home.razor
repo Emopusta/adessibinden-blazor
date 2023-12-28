@@ -13,6 +13,10 @@
     <p>Loading...</p>
 }
 else{
+    <button @onclick="() => GetColors()" class="btn btn-success btn-block"><i class="bi bi-person-bounding-box"></i> Get Colors</button>
+
+    if (IsColorsReady)
+    {
 
     @foreach(var item in colorResponse.Data.Items)
     {
@@ -21,6 +25,7 @@ else{
         </div>
     }
 
+    }
     <EditForm Model="credentials" OnValidSubmit="LoginUser">
 
 
@@ -36,8 +41,8 @@ else{
         </div>
    
     </EditForm>
-    
-    if (IsLogged)
+
+    @if (IsLogged)
     {
         <div>
             <p >@loggedResponse.Message </p>
@@ -51,33 +56,34 @@ else{
 @code{
     public bool IsProcessing { get; set; } = false;
     public bool IsLogged { get; set; } = false;
+    public bool IsColorsReady { get; set; } = false;
     public RequestResult<GetListResponse<GetAllColorsListItemDto>> colorResponse;
-    public RequestResult<LoggedResponse> loggedResponse;
+    public IRequestResult<LoggedResponse> loggedResponse;
     public UserForLoginDto credentials = new()
         {
             Email = "emre@emre",
             Password = "1234"
         };
 
-    protected async override Task OnInitializedAsync()
-    {
-        IsProcessing = true;
-
-        colorResponse = await _colorService.GetAll(0,10);
-
-
-
-        IsProcessing = false;
-    }
-
     private async Task LoginUser()
     {
         IsProcessing = true;
 
         loggedResponse = await _authService.Login(credentials);
-        
+
         IsLogged = true;
-        
+
+        IsProcessing = false;
+
+    }
+
+    private async Task GetColors()
+    {
+        IsProcessing = true;
+
+        colorResponse = await _colorService.GetAll(0, 10);
+        IsColorsReady = colorResponse.Success;
+
         IsProcessing = false;
 
     }

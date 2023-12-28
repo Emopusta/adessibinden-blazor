@@ -8,7 +8,7 @@ namespace AdessibindenFrontend.Services.Abstract
 {
     public interface IAuthService
     {
-        public Task<RequestResult<LoggedResponse>> Login(UserForLoginDto credentials);
+        public Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials);
         public Task<RegisteredResponse> Register(UserForRegisterDto credentials);
         public Task<RefreshedTokensResponse> RefreshToken();
         public Task<RevokedTokenResponse> RevokeToken(string refreshToken);
