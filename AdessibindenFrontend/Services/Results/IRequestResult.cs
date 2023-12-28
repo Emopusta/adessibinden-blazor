@@ -1,6 +1,6 @@
 ﻿using Core.Utilities.Exceptions;
 
-namespace AdessibindenFrontend.Services
+namespace AdessibindenFrontend.Services.Results
 {
     public interface IRequestResult<T>
     {
