@@ -29,7 +29,7 @@ namespace AdessibindenFrontend.Services.Concrete
             var response = await _httpClient.PostAsJsonAsync("/api/Auth/Login", credentials);
             var result = response.Content.ReadFromJsonAsync<RequestResult<LoggedResponse>>().Result;
             if (result.Data != null) {
-            await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken.Token);
+            await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
             }
             return result;

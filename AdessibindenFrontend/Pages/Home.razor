@@ -1,12 +1,11 @@
 ﻿@page "/"
-@using AdessibindenFrontend.Services
 @using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Results
 @using Application.Features.Auth.Commands.Login
 @using Application.Features.Colors.Queries.GetAll
 @using Core.Application.Dtos
 @using Core.Application.Responses
 @inject IColorService _colorService;
-@inject IAuthService _authService;
 
 
 @if (IsProcessing){
@@ -17,37 +16,18 @@ else{
 
     if (IsColorsReady)
     {
-
+      
+                
     @foreach(var item in colorResponse.Data.Items)
     {
         <div>
             <h1>@item.Name</h1>
         </div>
     }
+      
 
     }
-    <EditForm Model="credentials" OnValidSubmit="LoginUser">
-
-
-           <div class="py-2">
-                <InputText @bind-Value="credentials.Email" id="email" placeholder="Email..." class="form-control mb-2" />
-        </div>
-        <div class="py-2">
-        <InputText @bind-Value="credentials.Password" type="password" placeholder="Password..." id="password" class="form-control mb-2" />
-        </div>
-        <div class="py-2">
-            <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-bounding-box"></i> Sign in</button>
-            <a href="/register" class="btn btn-primary text-white m-2"><i class="bi bi-person-plus-fill"></i> Register as a new user</a>
-        </div>
    
-    </EditForm>
-
-    @if (IsLogged)
-    {
-        <div>
-            <p >@loggedResponse.Message </p>
-        </div>
-    }
 
 }
 
@@ -55,27 +35,11 @@ else{
 
 @code{
     public bool IsProcessing { get; set; } = false;
-    public bool IsLogged { get; set; } = false;
     public bool IsColorsReady { get; set; } = false;
     public RequestResult<GetListResponse<GetAllColorsListItemDto>> colorResponse;
-    public IRequestResult<LoggedResponse> loggedResponse;
-    public UserForLoginDto credentials = new()
-        {
-            Email = "emre@emre",
-            Password = "1234"
-        };
+    
 
-    private async Task LoginUser()
-    {
-        IsProcessing = true;
-
-        loggedResponse = await _authService.Login(credentials);
-
-        IsLogged = true;
-
-        IsProcessing = false;
-
-    }
+    
 
     private async Task GetColors()
     {
