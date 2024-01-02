@@ -1,12 +1,35 @@
 ﻿@inherits LayoutComponentBase
 
-    
-        <NavMenu />
-
-
+    <NavMenu />
     <main>
-       
         <article class="content px-4">
-            @Body
+            <ErrorBoundary @ref="errorBoundary">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="alert alert-danger m-lg-5 col-4">  
+                            <h3>
+                                @context.Message
+                            </h3>
+                            <button class="btn btn-info float-end" @onclick="() => errorBoundary.Recover()">Continue</button>
+                        </div>
+                    </div>
+                </ErrorContent>
+            </ErrorBoundary>
         </article>
     </main>
+
+
+@code{
+    private ErrorBoundary errorBoundary;
+
+    protected override void OnInitialized()
+    {
+        errorBoundary = new ErrorBoundary();
+
+    }
+
+    }
