@@ -7,7 +7,6 @@ namespace AdessibindenFrontend.Services.Results
         T Data { get; set; }
         ExceptionDetails Error { get; set; }
         bool Success { get; set; }
-        string Message { get; set; }
 
     }
 }
