@@ -1,0 +1,15 @@
+﻿@page "/logout"
+@using AdessibindenFrontend.Services.Abstract
+
+@code {
+    [Inject]
+    public IAuthService _authService { get; set; }
+    [Inject]
+    public NavigationManager _navigationManager { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        await _authService.Logout();
+        _navigationManager.NavigateTo("/", true);
+    }
+}
