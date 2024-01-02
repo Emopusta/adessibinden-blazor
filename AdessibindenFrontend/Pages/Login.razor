@@ -28,7 +28,7 @@
 @if (IsLogged)
 {
     <div>
-        <p>@loggedResponse.Message </p>
+        <p>@loggedResponse.Error.Title</p>
     </div>
 }
 
@@ -45,7 +45,7 @@
 
         loggedResponse = await _authService.Login(credentials);
 
-        IsLogged = true;
+        IsLogged = loggedResponse.Success;
 
 
     }
