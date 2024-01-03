@@ -25,12 +25,7 @@
 
 </EditForm>
 
-@if (IsLogged)
-{
-    <div>
-        <p>@loggedResponse.Error.Title</p>
-    </div>
-}
+
 
 @code {
     public bool IsLogged { get; set; } = false;
