@@ -3,7 +3,7 @@
     <NavMenu />
     <main>
         <article class="content px-4">
-            <ErrorBoundary @ref="errorBoundary">
+            <CustomErrorBoundary @ref="errorBoundary"> @* buna benzer loading için *@
                 <ChildContent>
                     @Body
                 </ChildContent>
@@ -18,17 +18,17 @@
                         </div>
                     </div>
                 </ErrorContent>
-            </ErrorBoundary>
+            </CustomErrorBoundary>
         </article>
     </main>
 
 
 @code{
-    private ErrorBoundary errorBoundary;
+    private CustomErrorBoundary errorBoundary;
 
     protected override void OnInitialized()
     {
-        errorBoundary = new ErrorBoundary();
+        errorBoundary = new CustomErrorBoundary();
 
     }
 
