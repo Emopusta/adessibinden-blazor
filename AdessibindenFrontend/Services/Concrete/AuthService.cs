@@ -6,6 +6,7 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Blazored.LocalStorage;
 using Core.Application.Dtos;
+using Core.Application.Responses;
 using Core.Security.JWT;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
@@ -30,7 +31,7 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials)
         {
-               
+
             var response = await _httpClient.PostAsJsonAsync("/api/Auth/Login", credentials);
             var result = response.Content.ReadFromJsonAsync<RequestResult<LoggedResponse>>().Result;
             if (!result.Success) { throw new Exception(result.Error.Detail); }
@@ -38,7 +39,13 @@ namespace AdessibindenFrontend.Services.Concrete
             await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
 
-                
+            NavigateToRecentOrHomePage();
+
+            return result;
+        }
+
+        private void NavigateToRecentOrHomePage()
+        {
             var absoluteUri = new Uri(_navigationManager.Uri);
             var queryParam = HttpUtility.ParseQueryString(absoluteUri.Query);
             var returnUrl = queryParam["returnUrl"];
@@ -50,8 +57,6 @@ namespace AdessibindenFrontend.Services.Concrete
             {
                 _navigationManager.NavigateTo("/" + returnUrl, true);
             }
-            
-            return result;
         }
 
         public async Task Logout()
@@ -62,9 +67,12 @@ namespace AdessibindenFrontend.Services.Concrete
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        public Task<RefreshedTokensResponse> RefreshToken()
+        public async Task<IRequestResult<RefreshedTokensResponse>> RefreshToken()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/Auth/RefreshToken");
+            var result = response.Content.ReadFromJsonAsync<RequestResult<RefreshedTokensResponse>>().Result;
+
+            return result;
         }
 
         public Task<RegisteredResponse> Register(UserForRegisterDto credentials)
@@ -76,6 +84,8 @@ namespace AdessibindenFrontend.Services.Concrete
         {
             throw new NotImplementedException();
         }
+
+        
     }
 
    

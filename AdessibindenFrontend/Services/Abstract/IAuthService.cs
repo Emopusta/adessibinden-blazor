@@ -4,6 +4,7 @@ using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Core.Application.Dtos;
+using Core.Security.JWT;
 
 namespace AdessibindenFrontend.Services.Abstract
 {
@@ -12,7 +13,7 @@ namespace AdessibindenFrontend.Services.Abstract
         public Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials);
         public Task Logout();
         public Task<RegisteredResponse> Register(UserForRegisterDto credentials);
-        public Task<RefreshedTokensResponse> RefreshToken();
+        public Task<IRequestResult<RefreshedTokensResponse>> RefreshToken();
         public Task<RevokedTokenResponse> RevokeToken(string refreshToken);
     }
 }
