@@ -13,6 +13,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddAPIServices();
 
 builder.Services.AddScoped<StatusCodeDelegatingHandler>();
+builder.Services.AddScoped<CookieHandler>();
 
 //httpclient yerine restsharp!!! *********************************************************************************************************************************************
 builder.Services.AddScoped(sp =>
@@ -24,14 +25,14 @@ builder.Services.AddScoped(sp =>
 }).AddHttpClient("StatusCodeDelegatingHandler", client =>
 {
     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
-}).AddHttpMessageHandler<StatusCodeDelegatingHandler>();
+}).AddHttpMessageHandler<StatusCodeDelegatingHandler>().AddHttpMessageHandler<CookieHandler>();
 
-
-
-builder.Services.AddBlazoredLocalStorage();
 
 
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+
+builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();
