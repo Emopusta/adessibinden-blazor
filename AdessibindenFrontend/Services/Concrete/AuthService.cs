@@ -10,6 +10,7 @@ using Core.Security.JWT;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Web;
 
 namespace AdessibindenFrontend.Services.Concrete
 {
@@ -29,16 +30,27 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials)
         {
-            
+               
             var response = await _httpClient.PostAsJsonAsync("/api/Auth/Login", credentials);
             var result = response.Content.ReadFromJsonAsync<RequestResult<LoggedResponse>>().Result;
+            if (!result.Success) { throw new Exception(result.Error.Detail); }
 
-            if (result.Data != null) {
             await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
-            }
 
-            _navigationManager.NavigateTo("/", true);
+                
+            var absoluteUri = new Uri(_navigationManager.Uri);
+            var queryParam = HttpUtility.ParseQueryString(absoluteUri.Query);
+            var returnUrl = queryParam["returnUrl"];
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                _navigationManager.NavigateTo("/", true);
+            }
+            else
+            {
+                _navigationManager.NavigateTo("/" + returnUrl, true);
+            }
+            
             return result;
         }
 
