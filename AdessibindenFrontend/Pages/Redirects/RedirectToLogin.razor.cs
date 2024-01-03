@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
 namespace AdessibindenFrontend.Pages.Redirects
 {
     public partial class RedirectToLogin
     {
-        public Task<AuthenticationState> _authState;
-        public NavigationManager _navigationManager;
-
-        public RedirectToLogin(Task<AuthenticationState> authState, NavigationManager navigationManager)
-        {
-            _authState = authState;
-            _navigationManager = navigationManager;
-        }
+        [CascadingParameter]
+        public Task<AuthenticationState> _authState {  get; set; }
+        [Inject]
+        public NavigationManager _navigationManager { get; set; }
+        
 
         bool isAuthorized { get; set; } = false;
 
