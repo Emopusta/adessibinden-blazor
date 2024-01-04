@@ -1,0 +1,47 @@
+﻿@page "/register"
+
+@using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Results
+@using Application.Features.Auth.Commands.Register
+@using Core.Application.Dtos
+@inject IAuthService _authService;
+
+<h3>Register</h3>
+<EditForm Model="registerDto" OnValidSubmit="RegisterUser">
+
+
+    <div class="py-2">
+        <InputText @bind-Value="registerDto.Email" id="email" placeholder="Email..." class="form-control mb-2" />
+    </div>
+    <div class="py-2">
+        <InputText @bind-Value="registerDto.Password" type="password" placeholder="Password..." id="password" class="form-control mb-2" />
+    </div>
+    <div class="py-2">
+        <InputText @bind-Value="validatePassword" type="password" placeholder="Password..." id="validatePassword" class="form-control mb-2" />
+    </div>
+    <div class="py-2">
+        <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-bounding-box"></i> Sign Up</button>
+    </div>
+
+
+</EditForm>
+@code {
+    private string validatePassword;
+
+    public UserForRegisterDto registerDto = new();
+
+    public IRequestResult<RegisteredResponse> registeredResponse;
+
+    private async Task RegisterUser()
+    {
+        if (validatePassword == registerDto.Password)
+        {
+            registeredResponse = await _authService.Register(registerDto);
+        }
+        else
+        {
+            throw new Exception("Passwords don't match");
+        }
+
+    }
+}

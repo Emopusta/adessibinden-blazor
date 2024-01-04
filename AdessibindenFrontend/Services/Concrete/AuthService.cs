@@ -76,9 +76,18 @@ namespace AdessibindenFrontend.Services.Concrete
             return result;
         }
 
-        public Task<RegisteredResponse> Register(UserForRegisterDto credentials)
+        public async Task<IRequestResult<RegisteredResponse>> Register(UserForRegisterDto userForRegisterDto)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync("/api/Auth/Register", userForRegisterDto);
+            var result = response.Content.ReadFromJsonAsync<RequestResult<RegisteredResponse>>().Result;
+            if (!result.Success) { throw new Exception(result.Error.Detail); }
+
+            await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
+
+            NavigateToRecentOrHomePage();
+
+            return result;
         }
 
         public Task<RevokedTokenResponse> RevokeToken(string refreshToken)

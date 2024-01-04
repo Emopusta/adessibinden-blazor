@@ -12,7 +12,7 @@ namespace AdessibindenFrontend.Services.Abstract
     {
         public Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials);
         public Task Logout();
-        public Task<RegisteredResponse> Register(UserForRegisterDto credentials);
+        public Task<IRequestResult<RegisteredResponse>> Register(UserForRegisterDto credentials);
         public Task<IRequestResult<RefreshedTokensResponse>> RefreshToken();
         public Task<RevokedTokenResponse> RevokeToken(string refreshToken);
     }
