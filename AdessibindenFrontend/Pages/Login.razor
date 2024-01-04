@@ -5,26 +5,27 @@
 @using Core.Application.Dtos
 @inject IAuthService _authService;
 
+<div class="container-fluid">
+    <h1 class="text-center mt-5">Login</h1>
 
-<h3>Login</h3>
+    <EditForm Model="credentials" OnValidSubmit="LoginUser" class="w-25 m-auto mt-5">
+        <div class="form-floating">
+            <InputText @bind-Value="credentials.Email" id="email" placeholder="Email..." class="form-control mb-2" />
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+            <InputText @bind-Value="credentials.Password" type="password" placeholder="Password..." id="password" class="form-control mb-2" />
+            <label for="floatingPassword">Password</label>
+        </div>
 
-<EditForm Model="credentials" OnValidSubmit="LoginUser">
+    
+        <button class="btn btn-primary w-100 py-2 btn-success" type="submit">Sign in</button>
+        <p class="mt-2">Don't you have an account? 
+        <a href="/register" class="m-1"><i class="bi bi-person-plus-fill"></i>Register</a>
+        </p>
+    </EditForm>
 
-
-    <div class="py-2">
-        <InputText @bind-Value="credentials.Email" id="email" placeholder="Email..." class="form-control mb-2" />
-    </div>
-    <div class="py-2">
-        <InputText @bind-Value="credentials.Password" type="password" placeholder="Password..." id="password" class="form-control mb-2" />
-    </div>
-    <div class="py-2">
-        <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-bounding-box"></i> Sign in</button>
-        <a href="/register" class="btn btn-primary text-white m-2"><i class="bi bi-person-plus-fill"></i> Register as a new user</a>
-    </div>
-
-
-</EditForm>
-
+</div>
 
 
 @code {
