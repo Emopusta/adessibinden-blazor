@@ -6,7 +6,6 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Blazored.LocalStorage;
 using Core.Application.Dtos;
-using Core.Application.Responses;
 using Core.Security.JWT;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
@@ -62,6 +61,8 @@ namespace AdessibindenFrontend.Services.Concrete
         public async Task Logout()
         {
             _ = await _localStorageService.GetItemAsync<AccessToken>("local_token") ?? throw new Exception("You are already logged out.");
+            
+            await _httpClient.GetAsync("/api/Auth/Logout");
 
             await _localStorageService.RemoveItemAsync("local_token");
             _httpClient.DefaultRequestHeaders.Authorization = null;

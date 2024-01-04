@@ -1,16 +1,10 @@
 ﻿using AdessibindenFrontend.Helpers;
 using AdessibindenFrontend.Services.Abstract;
-using AdessibindenFrontend.Services.Results;
-using Application.Features.Auth.Commands.RefreshToken;
 using Blazored.LocalStorage;
 using Core.Security.JWT;
-using Core.Utilities.Results;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
-using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Security.Claims;
 
 namespace AdessibindenFrontend.Services
@@ -29,8 +23,6 @@ namespace AdessibindenFrontend.Services
             _authService = authService;
             _localStorageService = localStorageService;
         }
-
-        //TODO: fix refresh token auto login problem when logout
         public override async Task<AuthenticationState> GetAuthenticationStateAsync() //refactor needed
         {
             var token = await _localStorage.GetItemAsync<string>("local_token");
