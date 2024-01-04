@@ -28,7 +28,6 @@
 
 
 @code {
-    public bool IsLogged { get; set; } = false;
     public IRequestResult<LoggedResponse> loggedResponse;
     public UserForLoginDto credentials = new()
         {
@@ -39,9 +38,6 @@
     {
 
         loggedResponse = await _authService.Login(credentials);
-
-        IsLogged = loggedResponse.Success;
-
 
     }
 }
