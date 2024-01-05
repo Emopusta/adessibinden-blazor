@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Net;
 using Application.Features.UserProfiles.Commands.Update;
 using Application.Features.UserProfiles.Commands.Dtos;
+using Application.Features.UserProfiles.Queries.GetById;
 
 namespace AdessibindenFrontend.Services.Concrete
 {
@@ -24,6 +25,12 @@ namespace AdessibindenFrontend.Services.Concrete
             var response = await _httpClient.PostAsJsonAsync("/api/UserProfiles", createUserProfileDto);
             var result = response.Content.ReadFromJsonAsync<RequestResult<CreatedUserProfileResponse>>().Result;
             return result;
+        }
+
+        public async Task<IRequestResult<GetUserProfileResponse>> GetProfile(int userId)
+        {
+            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetUserProfileResponse>>($"/api/UserProfiles/getById?UserId={userId}");
+            return response;
         }
 
         public async Task<IRequestResult<UpdatedUserProfileResponse>> UpdateProfile(UpdateUserProfileDto updateUserProfileDto)
