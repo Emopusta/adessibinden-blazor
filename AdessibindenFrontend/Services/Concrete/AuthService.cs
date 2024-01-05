@@ -39,6 +39,7 @@ namespace AdessibindenFrontend.Services.Concrete
             if (!result.Success) { throw new Exception(result.Error.Detail); }
 
             await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
+
             ((AuthStateProvider)_authenticationStateProvider).NotifyUserLoggedIn(result.Data.AccessToken.Token);
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
@@ -89,6 +90,8 @@ namespace AdessibindenFrontend.Services.Concrete
             var response = await _httpClient.PostAsJsonAsync("/api/Auth/Register", userForRegisterDto);
             var result = response.Content.ReadFromJsonAsync<RequestResult<RegisteredResponse>>().Result;
             if (!result.Success) { throw new Exception(result.Error.Detail); }
+
+            ((AuthStateProvider)_authenticationStateProvider).NotifyUserLoggedIn(result.Data.AccessToken.Token);
 
             await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
