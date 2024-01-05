@@ -1,10 +1,14 @@
 ﻿using AdessibindenFrontend.Helpers;
 using AdessibindenFrontend.Services.Abstract;
+using AdessibindenFrontend.Services.Results;
+using Application.Features.Auth.Commands.RefreshToken;
 using Blazored.LocalStorage;
 using Core.Security.JWT;
+using Domain.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Security.Claims;
 
 namespace AdessibindenFrontend.Services
@@ -13,15 +17,12 @@ namespace AdessibindenFrontend.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
-        private readonly IAuthService _authService;
-        private readonly ILocalStorageService _localStorageService;
+        
 
-        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, IAuthService authService, ILocalStorageService localStorageService)
+        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
-            _authService = authService;
-            _localStorageService = localStorageService;
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync() //refactor needed
         {
@@ -37,10 +38,11 @@ namespace AdessibindenFrontend.Services
                 }
             }
 
-            var refreshToken = await _authService.RefreshToken();
+            var refreshTokenResponse = await _httpClient.GetAsync("/api/Auth/RefreshToken");
+            var refreshToken = refreshTokenResponse.Content.ReadFromJsonAsync<RequestResult<RefreshedTokensResponse>>().Result;
             if (refreshToken.Success)
                 {
-                    await _localStorageService.SetItemAsync("local_token", refreshToken.Data.AccessToken);
+                    await _localStorage.SetItemAsync("local_token", refreshToken.Data.AccessToken);
                     _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", refreshToken.Data.AccessToken.Token);
                     return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(refreshToken.Data.AccessToken.Token), "jwtAuthType")));
                 }
@@ -48,10 +50,23 @@ namespace AdessibindenFrontend.Services
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
         
+
+        public void NotifyUserLoggedIn(string token)
+        {
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
+            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+            NotifyAuthenticationStateChanged(authState);
+        }
+        public void NotifyUserLogout()
+        {
+            var authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
+            NotifyAuthenticationStateChanged(authState);
+        }
         private bool CheckIsTokenExpired(AccessToken accessToken)
         {
             return accessToken.Expiration < DateTime.UtcNow;
         }
+
 
     }
 }

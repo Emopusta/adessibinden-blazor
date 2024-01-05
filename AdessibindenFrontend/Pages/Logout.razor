@@ -10,6 +10,6 @@
     protected override async void OnInitialized()
     {
         await _authService.Logout();
-        _navigationManager.NavigateTo("/", true);
+        _navigationManager.NavigateTo("/");
     }
 }

@@ -8,6 +8,7 @@ using Blazored.LocalStorage;
 using Core.Application.Dtos;
 using Core.Security.JWT;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Web;
@@ -19,13 +20,15 @@ namespace AdessibindenFrontend.Services.Concrete
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
-        NavigationManager _navigationManager;
+        readonly NavigationManager _navigationManager;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-        public AuthService(HttpClient httpClient, ILocalStorageService localStorageService, NavigationManager navigationManager)
+        public AuthService(HttpClient httpClient, ILocalStorageService localStorageService, NavigationManager navigationManager, AuthenticationStateProvider authenticationStateProvider)
         {
             _httpClient = httpClient;
             _localStorageService = localStorageService;
             _navigationManager = navigationManager;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
         public async Task<IRequestResult<LoggedResponse>> Login(UserForLoginDto credentials)
@@ -36,6 +39,8 @@ namespace AdessibindenFrontend.Services.Concrete
             if (!result.Success) { throw new Exception(result.Error.Detail); }
 
             await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
+            ((AuthStateProvider)_authenticationStateProvider).NotifyUserLoggedIn(result.Data.AccessToken.Token);
+
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.AccessToken.Token);
 
             NavigateToRecentOrHomePage();
@@ -50,11 +55,11 @@ namespace AdessibindenFrontend.Services.Concrete
             var returnUrl = queryParam["returnUrl"];
             if (string.IsNullOrEmpty(returnUrl))
             {
-                _navigationManager.NavigateTo("/", true);
+                _navigationManager.NavigateTo("/");
             }
             else
             {
-                _navigationManager.NavigateTo("/" + returnUrl, true);
+                _navigationManager.NavigateTo("/" + returnUrl);
             }
         }
 
@@ -65,6 +70,9 @@ namespace AdessibindenFrontend.Services.Concrete
             await _httpClient.GetAsync("/api/Auth/Logout");
 
             await _localStorageService.RemoveItemAsync("local_token");
+
+            ((AuthStateProvider)_authenticationStateProvider).NotifyUserLogout();
+
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
