@@ -4,7 +4,7 @@
 @using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Results
 @using Application.Features.Auth.Commands.Register
-@using Application.Features.UserProfiles.Commands.Create
+@using Application.Features.UserProfiles.Commands.Update
 @using Core.Application.Dtos
 @inject IAuthService _authService;
 @inject IUserProfileService _userProfileService;
@@ -14,11 +14,11 @@
 
     <EditForm Model="registerDto" OnValidSubmit="RegisterUser" class="w-25 m-auto mt-5">
         <div class="form-floating">
-            <InputText @bind-Value="createUserProfileDto.FirstName" id="firstName" placeholder="First Name..." class="form-control mb-2" />
+            <InputText @bind-Value="updateUserProfileDto.FirstName" id="firstName" placeholder="First Name..." class="form-control mb-2" />
             <label for="floatingInput">First Name</label>
         </div>
         <div class="form-floating">
-            <InputText @bind-Value="createUserProfileDto.LastName" id="lastName" placeholder="lastName..." class="form-control mb-2" />
+            <InputText @bind-Value="updateUserProfileDto.LastName" id="lastName" placeholder="Last Name..." class="form-control mb-2" />
             <label for="floatingInput">Last Name</label>
         </div>
         <div class="form-floating">
@@ -41,19 +41,19 @@
 
 @code {
     private string verifyPassword;
-    public CreateUserProfileDto createUserProfileDto = new();
+    public UpdateUserProfileDtoLocal updateUserProfileDto = new();
     public UserForRegisterDto registerDto = new();
 
     public IRequestResult<RegisteredResponse> registeredResponse;
-    public IRequestResult<CreatedUserProfileResponse> createdUserProfileResponse;
+    public IRequestResult<UpdatedUserProfileResponse> createdUserProfileResponse;
 
     private async Task RegisterUser()
     {
         if (verifyPassword == registerDto.Password)
         {
             registeredResponse = await _authService.Register(registerDto);
-            createUserProfileDto.UserId = registeredResponse.Data.UserId;
-            createdUserProfileResponse = await _userProfileService.CreateProfile(createUserProfileDto);
+            updateUserProfileDto.UserId = registeredResponse.Data.UserId;
+            createdUserProfileResponse = await _userProfileService.UpdateProfile(updateUserProfileDto);
         }
         else
         {
