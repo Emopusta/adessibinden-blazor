@@ -1,15 +1,26 @@
 ﻿@page "/register"
 
 @using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Results
 @using Application.Features.Auth.Commands.Register
+@using Application.Features.UserProfiles.Commands.Create
 @using Core.Application.Dtos
 @inject IAuthService _authService;
+@inject IUserProfileService _userProfileService;
 
 <div class="container-fluid">
     <h1 class="text-center mt-5">Register</h1>
 
     <EditForm Model="registerDto" OnValidSubmit="RegisterUser" class="w-25 m-auto mt-5">
+        <div class="form-floating">
+            <InputText @bind-Value="createUserProfileDto.FirstName" id="firstName" placeholder="First Name..." class="form-control mb-2" />
+            <label for="floatingInput">First Name</label>
+        </div>
+        <div class="form-floating">
+            <InputText @bind-Value="createUserProfileDto.LastName" id="lastName" placeholder="lastName..." class="form-control mb-2" />
+            <label for="floatingInput">Last Name</label>
+        </div>
         <div class="form-floating">
             <InputText @bind-Value="registerDto.Email" id="email" placeholder="Email..." class="form-control mb-2" />
             <label for="floatingInput">Email address</label>
@@ -30,16 +41,19 @@
 
 @code {
     private string verifyPassword;
-
+    public CreateUserProfileDto createUserProfileDto = new();
     public UserForRegisterDto registerDto = new();
 
     public IRequestResult<RegisteredResponse> registeredResponse;
+    public IRequestResult<CreatedUserProfileResponse> createdUserProfileResponse;
 
     private async Task RegisterUser()
     {
         if (verifyPassword == registerDto.Password)
         {
             registeredResponse = await _authService.Register(registerDto);
+            createUserProfileDto.UserId = registeredResponse.Data.UserId;
+            createdUserProfileResponse = await _userProfileService.CreateProfile(createUserProfileDto);
         }
         else
         {

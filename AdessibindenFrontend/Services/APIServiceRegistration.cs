@@ -10,6 +10,7 @@ namespace AdessibindenFrontend.Services
 
             services.AddScoped<IColorService, ColorService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
 
             return services;
         }
