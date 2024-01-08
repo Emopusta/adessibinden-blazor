@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 using System.Net;
 using Application.Features.UserProfiles.Commands.Update;
 using Application.Features.UserProfiles.Commands.Dtos;
-using Application.Features.UserProfiles.Queries.GetById;
+using Application.Features.UserProfiles.Queries.GetByUserId;
 
 namespace AdessibindenFrontend.Services.Concrete
 {
