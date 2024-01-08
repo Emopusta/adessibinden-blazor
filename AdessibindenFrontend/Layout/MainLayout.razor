@@ -5,7 +5,10 @@
         <article class="content px-4">
             <CustomErrorBoundary @ref="errorBoundary"> @* buna benzer loading için *@
                 <ChildContent>
+                    <LoadingLayout Visible="@loadingVisible"></LoadingLayout>
+                    <CascadingValue Value="@Loading" TValue="Action<bool>">
                     @Body
+                    </CascadingValue>
                 </ChildContent>
                 <ErrorContent>
                     <div class="row">
@@ -26,10 +29,18 @@
 @code{
     private CustomErrorBoundary errorBoundary;
 
+    bool loadingVisible { get; set; }
+
     protected override void OnInitialized()
     {
         errorBoundary = new CustomErrorBoundary();
 
+    }
+
+    public void Loading(bool isLoading)
+    {
+        loadingVisible = isLoading;
+        StateHasChanged();
     }
 
     }
