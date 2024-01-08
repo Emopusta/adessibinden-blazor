@@ -1,5 +1,7 @@
 ﻿@page "/logout"
 @using AdessibindenFrontend.Services.Abstract
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 @code {
     [Inject]
