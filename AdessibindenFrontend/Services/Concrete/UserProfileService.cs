@@ -8,6 +8,7 @@ using System.Net;
 using Application.Features.UserProfiles.Commands.Update;
 using Application.Features.UserProfiles.Commands.Dtos;
 using Application.Features.UserProfiles.Queries.GetByUserId;
+using Application.Features.Auth.Commands.RefreshToken;
 
 namespace AdessibindenFrontend.Services.Concrete
 {
@@ -29,8 +30,9 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<GetUserProfileResponse>> GetProfile(int userId)
         {
-            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetUserProfileResponse>>($"/api/UserProfiles/getById?UserId={userId}");
-            return response;
+            var response = await _httpClient.GetAsync($"/api/UserProfiles/getById?UserId={userId}");
+            var result = response.Content.ReadFromJsonAsync<RequestResult<GetUserProfileResponse>>().Result;
+            return result;
         }
 
         public async Task<IRequestResult<UpdatedUserProfileResponse>> UpdateProfile(UpdateUserProfileDto updateUserProfileDto)

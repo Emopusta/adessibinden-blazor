@@ -1,67 +1,117 @@
-﻿@page "/user-profile/{UserId}"
+﻿@page "/user-profile"
 @using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Results
 @using Application.Features.UserProfiles.Commands.Dtos
 @using Application.Features.UserProfiles.Commands.Update
 @using Application.Features.UserProfiles.Queries.GetByUserId
+@using Microsoft.AspNetCore.Authorization
 @inject IUserProfileService _userProfileService
+@inject IAuthService _authService
+@inject NavigationManager navigationManager
+@attribute [Authorize]
 
-
-
-
-@if (isProfileLoaded)
+@if (!Loading)
 {
     
-    <div class="container-fluid">
-        <h1 class="text-center mt-5">Profile</h1>
+    @if (isProfileLoaded)
+    {
+    
+        <div class="container-fluid">
+            <h1 class="text-center mt-5">@UserEmail Profile</h1>
 
-        <EditForm Model="updateUserProfileDto" OnValidSubmit="UpdateProfile" class="w-25 m-auto mt-5">
-            <div class="form-floating">
-                <InputText @bind-Value="updateUserProfileDto.FirstName" id="firstName" placeholder="First Name..." class="form-control mb-2" />
-                <label for="floatingInput">First Name</label>
-            </div>
-            <div class="form-floating">
-                <InputText @bind-Value="updateUserProfileDto.LastName" id="lastName" placeholder="Last Name..." class="form-control mb-2" />
-                <label for="floatingInput">Last Name</label>
-            </div>
-            <div class="form-floating">
-                <InputTextArea @bind-Value="updateUserProfileDto.Address" id="address" placeholder="Address..." class="form-control mb-2" />
-                <label for="floatingInput">Address</label>
-            </div>
-            <div class="form-floating">
-                <InputDate @bind-Value="updateUserProfileDto.BirthDate" id="birthdate" class="form-control mb-2" />
-                <label for="floatingInput">Birth Date</label>
-            </div>
+            <EditForm Model="updateUserProfileDto" OnValidSubmit="UpdateProfile" class="w-25 m-auto mt-5">
+                <div class="form-floating">
+                    <InputText @bind-Value="updateUserProfileDto.FirstName" id="firstName" placeholder="First Name..." class="form-control mb-2" />
+                    <label for="floatingInput">First Name</label>
+                </div>
+                <div class="form-floating">
+                    <InputText @bind-Value="updateUserProfileDto.LastName" id="lastName" placeholder="Last Name..." class="form-control mb-2" />
+                    <label for="floatingInput">Last Name</label>
+                </div>
+                <div class="form-floating">
+                    <InputTextArea @bind-Value="updateUserProfileDto.Address" id="address" placeholder="Address..." class="form-control mb-2" />
+                    <label for="floatingInput">Address</label>
+                </div>
+                <div class="form-floating">
+                    <InputDate @bind-Value="updateUserProfileDto.BirthDate" id="birthdate" class="form-control mb-2" />
+                    <label for="floatingInput">Birth Date</label>
+                </div>
             
-            
+                <button class="btn btn-primary w-100 py-2 btn-success" type="submit">Save</button>
 
-            <button class="btn btn-primary w-100 py-2 btn-success" type="submit">Save</button>
+            </EditForm>
+        </div>
 
+    }
+    else
+    {
+        <div class="pt-5 pb-5 m-auto ">
+        <EditForm Model="updateUserProfileDto" OnValidSubmit="CreateProfile" class="w-50 m-auto text-center">
+            <h2>@ErrorMessage</h2>
+            <button class="btn btn-primary w-25 mt-5 py-2 btn-primary" type="submit">Create</button>
         </EditForm>
-    </div>
+        </div>
+
+    }
 
 }
 
 
 @code {
-    [Parameter]
-    public string UserId { get; set; }
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
 
+    private string UserId { get; set; }
+    public string UserEmail { get; set; }
     private int CastedUserId;
+
+    public bool Loading { get; set; } = true;
+
+    public string ErrorMessage { get; set; }
+
     public UpdateUserProfileDto updateUserProfileDto = new();
-    private bool isProfileLoaded = false;
+
     public IRequestResult<GetUserProfileResponse> userProfileResponse;
     public IRequestResult<UpdatedUserProfileResponse> updatedUserProfileResponse;
 
+    private bool isProfileLoaded = false;
+
     protected async override Task OnInitializedAsync()
     {
+        LoadingAction(true);
+
+        UserId = await _authService.GetCurrentUserId();
+        UserEmail = await _authService.GetCurrentUserEmail();
         CastedUserId = Int32.Parse(UserId);
 
         userProfileResponse = await _userProfileService.GetProfile(CastedUserId);
         isProfileLoaded = userProfileResponse.Success;
 
-        SetDto(userProfileResponse);
+        if (isProfileLoaded)
+        {
+            SetDto(userProfileResponse);
+        }
+        else
+        {
+            ErrorMessage = userProfileResponse.Error.Detail;
+        }
+        Loading = false;
 
+        await Task.Delay(3000);
+
+        LoadingAction(false);
+    }
+    private async Task CreateProfile()
+    {
+        var emptyUser = new CreateUserProfileDto(){ UserId = CastedUserId };
+        await _userProfileService.CreateProfile(emptyUser);
+        RefreshPage();
+    }
+
+    private void RefreshPage()
+    {
+        navigationManager.NavigateTo("/user-profile", true);
     }
 
     private async Task UpdateProfile()
@@ -69,7 +119,6 @@
         SetDto(userProfileResponse);
 
         updatedUserProfileResponse = await _userProfileService.UpdateProfile(updateUserProfileDto);
-
     }
 
     private void SetDto(IRequestResult<GetUserProfileResponse> userProfileResponse)

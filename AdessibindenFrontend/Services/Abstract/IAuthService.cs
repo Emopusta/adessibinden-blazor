@@ -15,5 +15,8 @@ namespace AdessibindenFrontend.Services.Abstract
         public Task<IRequestResult<RegisteredResponse>> Register(UserForRegisterDto credentials);
         public Task<IRequestResult<RefreshedTokensResponse>> RefreshToken();
         public Task<RevokedTokenResponse> RevokeToken(string refreshToken);
+
+        public Task<string> GetCurrentUserId();
+        public Task<string> GetCurrentUserEmail();
     }
 }

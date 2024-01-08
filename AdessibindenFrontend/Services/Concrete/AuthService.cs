@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Web;
 
 namespace AdessibindenFrontend.Services.Concrete
@@ -106,7 +107,16 @@ namespace AdessibindenFrontend.Services.Concrete
             throw new NotImplementedException();
         }
 
-        
+        public async Task<string> GetCurrentUserId()
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            return authState.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
+        }
+        public async Task<string> GetCurrentUserEmail()
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            return authState.User.FindFirst("Email").Value;
+        }
     }
 
    

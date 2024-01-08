@@ -16,32 +16,29 @@
                             <li class="nav-item ms-2 me-2 p-0">
                                 <NavLink class="nav-link text-white" href="counter">Counter</NavLink>
                             </li>
-                            <li class="nav-item ms-2 me-2 p-0">
-                                <div class="container-fluid d-grid gap-3 align-items-center">
-
-                                <div class="flex-shrink-0 dropdown ">
-                                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Profile
-                                    </a>
-                                    <ul class="dropdown-menu text-small shadow" style="">
-                                            <li class="nav-item p-0 me-2">
-                                                <NavLink class="nav-link text-white" href="@($"user-profile/{@context.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString()}")">
-                                                    <span class="p-2">
-                                                        Settings
-                                                    </span>
-                                                </NavLink>
-                                            </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                            <li class="nav-item p-0 me-2">
-                                                <NavLink class="nav-link text-white" href="logout">
-                                                    <span class="p-2">
-                                                        Logout
-                                                    </span>
-                                                </NavLink>
-                                            </li>
-                                    </ul>
-                                </div>
-                                </div>
+                            <li class="nav-item p-0">
+                                    <div class="flex-shrink-0 dropdown ms-1">
+                                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle ps-2 pe-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Profile
+                                        </a>
+                                        <ul class="dropdown-menu text-small shadow" style="">
+                                                <li class="nav-item p-0 me-2">
+                                                    <NavLink class="nav-link text-white" href="user-profile">
+                                                        <span class="p-2">
+                                                            Settings
+                                                        </span>
+                                                    </NavLink>
+                                                </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                                <li class="nav-item p-0 me-2">
+                                                    <NavLink class="nav-link text-white" href="logout">
+                                                        <span class="p-2">
+                                                            Logout
+                                                        </span>
+                                                    </NavLink>
+                                                </li>
+                                        </ul>
+                                    </div>               
                             </li>
                         </Authorized>
                         <NotAuthorized>
