@@ -1,0 +1,47 @@
+﻿@page "/add-product"
+@using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Results
+@using Application.Features.ProductCategories.Queries.GetAllList
+
+@inject IProductCategoryService _productCategoryService
+
+<div class="container-fluid">
+<h3 class="text-center mt-5 mb-5">AddProduct</h3>
+@if (isLoadSuccess)
+{
+    foreach (var category in productCategories.Data)
+    {
+        <div class="w-25 m-auto mt-2 ">
+            <div class="card border-primary mb-3" >
+                <NavLink class="nav-link text-white" href="@($"/add-{category.Name.ToLower()}-product")">
+                    <div class="card-body text-primary">
+                        <p class="card-text text-center">@category.Name</p>
+                    </div>
+                </NavLink>
+            </div>
+        </div>
+    }
+}
+</div>
+
+@code {
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
+
+    public bool isLoadSuccess { get; set; }
+
+    public IRequestResult<List<GetAllListProductCategoryDto>> productCategories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadingAction(true);
+
+
+        productCategories = await _productCategoryService.GetAll();
+
+        isLoadSuccess = productCategories.Success;
+
+        LoadingAction(false);
+
+    }
+}

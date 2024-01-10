@@ -12,6 +12,7 @@ namespace AdessibindenFrontend.Services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<IPhoneProductService, PhoneProductService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
 
             return services;
         }
