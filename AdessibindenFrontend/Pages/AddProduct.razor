@@ -6,9 +6,9 @@
 @inject IProductCategoryService _productCategoryService
 
 <div class="container-fluid">
-<h3 class="text-center mt-5 mb-5">AddProduct</h3>
 @if (isLoadSuccess)
 {
+    <h3 class="text-center mt-5 mb-5">AddProduct</h3>
     foreach (var category in productCategories.Data)
     {
         <div class="w-25 m-auto mt-2 ">
@@ -19,9 +19,10 @@
                     </div>
                 </NavLink>
             </div>
-        </div>
+            </div>
+        }
     }
-}
+
 </div>
 
 @code {
@@ -35,7 +36,6 @@
     protected override async Task OnInitializedAsync()
     {
         LoadingAction(true);
-
 
         productCategories = await _productCategoryService.GetAll();
 
