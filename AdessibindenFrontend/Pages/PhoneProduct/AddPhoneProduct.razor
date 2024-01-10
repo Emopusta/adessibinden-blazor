@@ -9,35 +9,90 @@
 
 @if (isLoadSuccess)
 {
-    <EditForm Model="addPhoneProductDto" OnValidSubmit="CreatePhoneProduct" class="w-25 m-auto mt-5">
-    <div class="border border-2 border-dark">
-        @foreach (var brand in productFeatures.Data.Brands)
-        {
-        <div class="my-3 p-2">
-            <div class="form-check">
-                        <input id="@($"brand-{brand.Id}")" @key="@($"brand-{brand.Id}")" name="brand" type="radio" @onchange="eventArgs => {SelectBrand(brand.Id, brand.Name);}" class="form-check-input">
-                        <label class="form-check-label" for="@($"brand-{brand.Id}")">@brand.Name</label>
+    <EditForm Model="addPhoneProductDto" OnValidSubmit="CreatePhoneProduct" class="w-50 m-auto mt-5">
+        
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Description</span>
+            <textarea class="form-control" aria-label="Description"></textarea>
+        </div>
+
+        <div class="border border-2 border-light shadow w-75 m-auto mt-3 row">
+            <div class="col-3">
+                <h5>Brand</h5>
+                @foreach (var brand in productFeatures.Data.Brands)
+                    {
+                    <div class="my-3 p-2">
+                        <div class="form-check">
+                            <input id="@($"brand-{brand.Id}")" @key="@($"brand-{brand.Id}")" name="brand" type="radio" @onchange="eventArgs => {SelectBrand(brand.Id, brand.Name);}" class="form-check-input">
+                            <label class="form-check-label" for="@($"brand-{brand.Id}")">@brand.Name</label>
+                        </div>
+                    </div>
+                    }
+            </div>
+            <div class="col-3">
+                @if (addPhoneBrandDto.Id != NullValue)
+                {
+                    <h5>Model</h5>
+                    
+                    @foreach (var model in productFeatures.Data.Models)
+                        {
+
+                        @if (addPhoneBrandDto.Id == model.BrandId)
+                            {
+                            <div class="my-3 p-2">
+                                <div class="form-check">
+                                    <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Id, model.Name);}" class="form-check-input" value="@($"{(model.Name == addPhoneModelDto.Name)}")">
+                                    <label class="form-check-label" for="@($"model-{model.Id}")">@model.Name</label>
+                                </div>
+                            </div>
+                            }
+                        }
+                }
+            </div>
+            <div class="col-3">
+                @if (addPhoneModelDto.Id != NullValue)
+                {
+                    <h5>Internal Memory</h5>
+
+                    @foreach (var internalMemory in productFeatures.Data.InternalMemories)
+                    {
+                        <div class="my-3 p-2">
+                            <div class="form-check">
+                                <input id="@($"internalMemory-{internalMemory.Id}")" @key="@($"internalMemory-{internalMemory.Id}")" name="internalMemory" type="radio" @onchange="eventArgs => {SelectInternalMemory(internalMemory.Id, internalMemory.Capacity);}" class="form-check-input" value="@($"{(internalMemory.Capacity == addPhoneInternalMemoryDto.Capacity)}")">
+                                <label class="form-check-label" for="@($"internalMemory-{internalMemory.Id}")">@internalMemory.Capacity</label>
+                            </div>
+                        </div>
+                        
+                    }
+                }
+            </div>
+            <div class="col-3">
+                @if (addPhoneInternalMemoryDto.Id != NullValue)
+                {
+                    <h5>RAM</h5>
+                    
+                    foreach (var RAM in productFeatures.Data.PhoneRAMs)
+                    {
+                        
+                        <div class="my-3 p-2">
+                            <div class="form-check">
+                                <input id="@($"ram-{RAM.Id}")" @key="@($"ram-{RAM.Id}")" name="RAM" type="radio" @onchange="eventArgs => {SelectPhoneRAM(RAM.Id, RAM.Memory);}" class="form-check-input" value="@($"{(RAM.Id == 0)}")" >
+                                <label class="form-check-label" for="@($"ram-{RAM.Id}")">@RAM.Memory</label>
+                            </div>
+                        </div>
+                        
+                    }
+                }
             </div>
         </div>
-        }
-        <hr />
-    @foreach (var model in productFeatures.Data.Models)
-    {
-        @if (addPhoneBrandDto.Id == model.BrandId)
-        {
-                
-        <div class="my-3 p-2">
-            <div class="form-check">
-                            <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Name);}" class="form-check-input" value="@($"{(model.Name == addPhoneModelDto.Name)}")">
-                        <label class="form-check-label" for="@($"model-{model.Id}")">@model.Name</label>
-            </div>
-        </div>
-            }
-    }
-    </div>
 
 
-        <button class="btn btn-primary w-100 py-2 btn-success" type="submit">Save</button>
+        <button class="btn btn-primary w-100 py-2 btn-success mt-5" type="submit">Save</button>
 
     </EditForm>
 }
@@ -48,11 +103,15 @@
     public Action<bool> LoadingAction { get; set; }
 
     public bool isLoadSuccess { get; set; }
+    public int NullValue { get; } = 0;
 
     public AddPhoneProductDto addPhoneProductDto = new();
 
     public AddPhoneBrandDto addPhoneBrandDto = new();
+    public AddPhoneRAMDto addPhoneRAMDto = new();
     public AddPhoneModelDto addPhoneModelDto = new();
+    public AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
+
     public IRequestResult<GetAllPhoneProductFeaturesDto> productFeatures;
 
     protected override async Task OnInitializedAsync()
@@ -73,19 +132,53 @@
         addPhoneBrandDto.Name = name;
 
         ClearModel();
+        ClearInternalMemory();
+        ClearPhoneRAM();
     }
 
-    void SelectModel(string name)
+    void SelectModel(int id, string name)
     {
+        addPhoneModelDto.Id = id;
         addPhoneModelDto.Name = name;
+
+        ClearInternalMemory();
+        ClearPhoneRAM();
     }
+
     void ClearModel()
     {
-        addPhoneModelDto.Name = "";
+        addPhoneModelDto.Id = NullValue;
+        addPhoneModelDto.Name = string.Empty;
     }
+
+    void SelectInternalMemory(int id, string capacity)
+    {
+        addPhoneInternalMemoryDto.Id = id;
+        addPhoneInternalMemoryDto.Capacity = capacity;
+
+        ClearPhoneRAM();
+    }
+    void ClearInternalMemory()
+    {
+        addPhoneInternalMemoryDto.Id = NullValue;
+        addPhoneInternalMemoryDto.Capacity = string.Empty;
+    }
+
+    void SelectPhoneRAM(int id, string memory)
+    {
+        addPhoneRAMDto.Id = id;
+        addPhoneRAMDto.Memory = memory;
+    }
+
+    void ClearPhoneRAM()
+    {
+        addPhoneRAMDto.Id = NullValue;
+        addPhoneRAMDto.Memory = string.Empty;
+    }
+
     private async Task CreatePhoneProduct()
     {
-
+        
     }
 
 }
