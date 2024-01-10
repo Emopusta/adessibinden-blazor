@@ -1,10 +1,16 @@
-﻿@page "/add-phone-product"
+﻿@page "/add-product/phone"
 
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Results
+@using AdessibindenFrontend.Shared
+@using Application.Features.Colors.Queries.GetAll
 @using Application.Features.PhoneProducts.Dtos
+@using Core.Application.Responses
 @inject IPhoneProductService _phoneProductService
+@inject IAuthService _authService
+@inject IColorService _colorService
+@inject ProductCategoryStateContainer _productCategoryStateContainer
 
 
 @if (isLoadSuccess)
@@ -13,17 +19,30 @@
         
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
-            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input type="text" class="form-control" aria-label="Sizing example input" @bind-value="Title" aria-describedby="inputGroup-sizing-default">
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text">Description</span>
-            <textarea class="form-control" aria-label="Description"></textarea>
+            <input type="text-area" class="form-control" @bind-value="Description" aria-label="Description"></input>
         </div>
-
+        
+            <h5 class="text-center m-auto" >Color</h5>
+        <div class="d-flex">
+            @foreach (var color in colors.Data.Items)
+            {
+            <div class="my-3 p-2">
+                    <div class="form-check">
+                        <input id="@($"color-{color.Id}")" @key="@($"color-{color.Id}")" name="color" type="radio" @onchange="eventArgs => {SelectColor(color.Id, color.Name);}" class="form-check-input">
+                        <label class="form-check-label" for="@($"color-{color.Id}")">@color.Name</label>
+                    </div>
+                </div>
+            }
+        </div>
+        
         <div class="border border-2 border-light shadow w-75 m-auto mt-3 row">
             <div class="col-3">
-                <h5>Brand</h5>
+                <h5 class="text-center m-auto">Brand</h5>
                 @foreach (var brand in productFeatures.Data.Brands)
                     {
                     <div class="my-3 p-2">
@@ -37,7 +56,7 @@
             <div class="col-3">
                 @if (addPhoneBrandDto.Id != NullValue)
                 {
-                    <h5>Model</h5>
+                    <h5 class="text-center m-auto">Model</h5>
                     
                     @foreach (var model in productFeatures.Data.Models)
                         {
@@ -57,7 +76,7 @@
             <div class="col-3">
                 @if (addPhoneModelDto.Id != NullValue)
                 {
-                    <h5>Internal Memory</h5>
+                    <h5 class="text-center m-auto">Internal Memory</h5>
 
                     @foreach (var internalMemory in productFeatures.Data.InternalMemories)
                     {
@@ -74,7 +93,7 @@
             <div class="col-3">
                 @if (addPhoneInternalMemoryDto.Id != NullValue)
                 {
-                    <h5>RAM</h5>
+                    <h5 class="text-center m-auto">RAM</h5>
                     
                     foreach (var RAM in productFeatures.Data.PhoneRAMs)
                     {
@@ -91,8 +110,28 @@
             </div>
         </div>
 
+        <div class="m-3">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" @onchange="eventArgs => {SelectUsageStatus(true);}">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    İkinci El
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" @onchange="eventArgs => {SelectUsageStatus(false);}">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Sıfır
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Price</span>
+            <input type="text" class="form-control" aria-label="Price" @bind-value="Price">
+        </div>
 
         <button class="btn btn-primary w-100 py-2 btn-success mt-5" type="submit">Save</button>
+
 
     </EditForm>
 }
@@ -102,8 +141,15 @@
     [CascadingParameter]
     public Action<bool> LoadingAction { get; set; }
 
+    private bool UsageStatus { get; set; }
+
     public bool isLoadSuccess { get; set; }
     public int NullValue { get; } = 0;
+
+    public string Description { get; set; }
+    public string Title { get; set; }
+    public int ColorId { get; set; }
+    public string Price{ get; set; }
 
     public AddPhoneProductDto addPhoneProductDto = new();
 
@@ -113,6 +159,7 @@
     public AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
 
     public IRequestResult<GetAllPhoneProductFeaturesDto> productFeatures;
+    public IRequestResult<GetListResponse<GetAllColorsListItemDto>> colors;
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,7 +168,9 @@
 
         productFeatures = await _phoneProductService.GetAll();
 
-        isLoadSuccess = productFeatures.Success;
+        colors = await _colorService.GetAll(0,10);
+
+        isLoadSuccess = productFeatures.Success && colors.Success;
 
         LoadingAction(false);
 
@@ -175,10 +224,29 @@
         addPhoneRAMDto.Id = NullValue;
         addPhoneRAMDto.Memory = string.Empty;
     }
+    void SelectColor(int id, string name)
+    {
+        ColorId = id;
+    }
 
+    void SelectUsageStatus(bool isUsed)
+    {
+        UsageStatus = isUsed;
+    }
     private async Task CreatePhoneProduct()
     {
-        
+        addPhoneProductDto.ProductCategoryId = _productCategoryStateContainer.ProductCategory.Id;
+        addPhoneProductDto.Title = Title; 
+        addPhoneProductDto.Description = Description; 
+        addPhoneProductDto.CreatorUserId = Int32.Parse(await _authService.GetCurrentUserId());
+        addPhoneProductDto.ModelId = addPhoneModelDto.Id;
+        addPhoneProductDto.InternalMemoryId= addPhoneInternalMemoryDto.Id;
+        addPhoneProductDto.RAMId = addPhoneRAMDto.Id;
+        addPhoneProductDto.ColorId = ColorId;
+        addPhoneProductDto.UsageStatus = UsageStatus;
+        addPhoneProductDto.Price = Decimal.Parse(Price);
+
+        await _phoneProductService.CreatePhoneProduct(addPhoneProductDto);
     }
 
 }
