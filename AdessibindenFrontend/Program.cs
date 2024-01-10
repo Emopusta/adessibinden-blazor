@@ -1,5 +1,6 @@
 using AdessibindenFrontend;
 using AdessibindenFrontend.Services;
+using AdessibindenFrontend.Shared;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,7 +10,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+
 builder.Services.AddAPIServices();
+
 
 builder.Services.AddScoped<StatusCodeDelegatingHandler>();
 builder.Services.AddScoped<CookieHandler>();
@@ -27,6 +30,9 @@ builder.Services.AddScoped(sp =>
 })
 .AddHttpMessageHandler<StatusCodeDelegatingHandler>()
 .AddHttpMessageHandler<CookieHandler>();
+
+builder.Services.AddSingleton<ProductCategoryStateContainer>();
+
 
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
