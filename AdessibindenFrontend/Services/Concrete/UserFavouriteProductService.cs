@@ -4,6 +4,7 @@ using AdessibindenFrontend.Services.Results;
 using Application.Features.UserFavouriteProducts.Commands.Create;
 using Application.Features.UserFavouriteProducts.Commands.Delete;
 using Application.Features.UserFavouriteProducts.Queries.GetByProductAndUserId;
+using Application.Features.UserFavouriteProducts.Queries.GetByUserId;
 using System.Net.Http.Json;
 
 namespace AdessibindenFrontend.Services.Concrete
@@ -30,10 +31,17 @@ namespace AdessibindenFrontend.Services.Concrete
             return response;
         }
 
-        public async Task<IRequestResult<GetByProductAndUserIdUserFavouriteProductResponse>> GetCurrentFavouriteByUserIdAndProducId(GetByProductAndUserIdFavouriteProductDto getByProductAndUserIdFavouriteProductDto)
+        public async Task<IRequestResult<GetByProductAndUserIdUserFavouriteProductResponse>> GetCurrentFavouriteByUserIdAndProductId(GetByProductAndUserIdFavouriteProductDto getByProductAndUserIdFavouriteProductDto)
         {
             var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts?UserId={getByProductAndUserIdFavouriteProductDto.UserId}&ProductId={getByProductAndUserIdFavouriteProductDto.ProductId}");
             var result = response.Content.ReadFromJsonAsync<RequestResult<GetByProductAndUserIdUserFavouriteProductResponse>>().Result;
+            return result;
+        }
+
+        public async Task<IRequestResult<List<GetByUserIdUserFavouriteProductResponse>>> GetByUserIdUserFavouriteProducts(int userId)
+        {
+            var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/getByUserId?UserId={userId}");
+            var result = response.Content.ReadFromJsonAsync<RequestResult<List<GetByUserIdUserFavouriteProductResponse>>>().Result;
             return result;
         }
     }

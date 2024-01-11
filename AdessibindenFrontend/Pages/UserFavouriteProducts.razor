@@ -1,0 +1,49 @@
+﻿@page "/favourite-products"
+@using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Results
+@using Application.Features.UserFavouriteProducts.Queries.GetByUserId
+
+@inject IUserFavouriteProductService _userFavouriteProductService
+@inject IAuthService _authService
+
+@if (isLoadSuccess)
+{
+    <h3 class="text-center mt-5 mb-5">AddProduct</h3>
+    @foreach (var item in favourites.Data)
+    {
+        <div class="w-25 m-auto mt-2 ">
+            <div class="card border-primary mb-3">
+                <NavLink class="nav-link text-white" href="@($"/phone-product/{item.ProductId}")">
+                    <div class="card-body text-primary">
+                        <p class="card-text text-center">@item.ProductTitle</p>
+                    </div>
+                </NavLink>
+            </div>
+        </div>
+    }
+ 
+}
+
+@code {
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
+
+    public bool isLoadSuccess { get; set; }
+
+    public IRequestResult<List<GetByUserIdUserFavouriteProductResponse>> favourites;
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        LoadingAction(true);
+
+
+        var currentUserId = Int32.Parse(await _authService.GetCurrentUserId());
+        favourites = await _userFavouriteProductService.GetByUserIdUserFavouriteProducts(currentUserId);
+
+
+        isLoadSuccess = favourites.Success;
+
+        LoadingAction(false);
+    }
+}
