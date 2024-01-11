@@ -3,6 +3,7 @@ using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 using Application.Features.PhoneProducts.Commands.Create;
 using Application.Features.PhoneProducts.Dtos;
+using Application.Features.PhoneProducts.Queries.GetByIdDetails;
 using Application.Features.UserProfiles.Commands.Create;
 using System.Net.Http.Json;
 
@@ -24,7 +25,13 @@ namespace AdessibindenFrontend.Services.Concrete
             return result;
         }
 
-        public async Task<RequestResult<GetAllPhoneProductFeaturesDto>> GetAll()
+        public Task<RequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int id)
+        {
+            var response = _httpClient.GetFromJsonAsync<RequestResult<GetByIdDetailsPhoneProductResponse>>($"/api/PhoneProducts/{id}");
+            return response;
+        }
+
+        public async Task<RequestResult<GetAllPhoneProductFeaturesDto>> GetFeatures()
         {
             
             var response = await _httpClient.GetFromJsonAsync<RequestResult<GetAllPhoneProductFeaturesDto>>($"/api/PhoneProducts");

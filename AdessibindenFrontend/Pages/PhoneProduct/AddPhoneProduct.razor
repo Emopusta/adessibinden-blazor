@@ -166,7 +166,7 @@
         LoadingAction(true);
 
 
-        productFeatures = await _phoneProductService.GetAll();
+        productFeatures = await _phoneProductService.GetFeatures();
 
         colors = await _colorService.GetAll(0,10);
 
