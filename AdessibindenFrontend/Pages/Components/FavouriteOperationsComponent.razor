@@ -28,7 +28,7 @@
     public int CurrentUserId { get; set; } 
 
     [Parameter]
-    public string ProductId { get; set; }
+    public int ProductId { get; set; }
 
     private bool isFavourite { get; set; }
 
@@ -43,20 +43,20 @@
     {
 
         isFavourite = true;
-        var result = await _userFavouriteProductService.AddFavourites(new Services.Dtos.CreateUserFavouriteProductDto() { ProductId = Int32.Parse(ProductId), UserId = CurrentUserId });
+        var result = await _userFavouriteProductService.AddFavourites(new Services.Dtos.CreateUserFavouriteProductDto() { ProductId = ProductId, UserId = CurrentUserId });
         StateHasChanged();
     }
 
     private async void DeleteFromFavourites()
     {
         isFavourite = false;
-        var result = await _userFavouriteProductService.DeleteFavourites(new Services.Dtos.DeleteUserFavouriteProductDto() { ProductId = Int32.Parse(ProductId), UserId = CurrentUserId });
+        var result = await _userFavouriteProductService.DeleteFavourites(new Services.Dtos.DeleteUserFavouriteProductDto() { ProductId = ProductId, UserId = CurrentUserId });
         StateHasChanged();
     }
 
     private async void CheckIsFavourite()
     {
-        var result = await _userFavouriteProductService.GetCurrentFavouriteByUserIdAndProductId(new Services.Dtos.GetByProductAndUserIdFavouriteProductDto() { ProductId = Int32.Parse(ProductId), UserId = CurrentUserId });
+        var result = await _userFavouriteProductService.GetCurrentFavouriteByUserIdAndProductId(new Services.Dtos.GetByProductAndUserIdFavouriteProductDto() { ProductId = ProductId, UserId = CurrentUserId });
         isFavourite = result.Success;
         StateHasChanged();
     }
