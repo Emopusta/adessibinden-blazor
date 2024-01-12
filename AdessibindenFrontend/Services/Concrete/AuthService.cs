@@ -107,10 +107,11 @@ namespace AdessibindenFrontend.Services.Concrete
             throw new NotImplementedException();
         }
 
-        public async Task<string> GetCurrentUserId()
+        public async Task<int> GetCurrentUserId()
         {
             var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            return authState.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
+            var currentUserId = Int32.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return currentUserId;
         }
         public async Task<string> GetCurrentUserEmail()
         {

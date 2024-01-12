@@ -16,7 +16,7 @@ namespace AdessibindenFrontend.Services.Abstract
         public Task<IRequestResult<RefreshedTokensResponse>> RefreshToken();
         public Task<RevokedTokenResponse> RevokeToken(string refreshToken);
 
-        public Task<string> GetCurrentUserId();
+        public Task<int> GetCurrentUserId();
         public Task<string> GetCurrentUserEmail();
     }
 }

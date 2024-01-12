@@ -238,7 +238,7 @@
         addPhoneProductDto.ProductCategoryId = _productCategoryStateContainer.ProductCategory.Id;
         addPhoneProductDto.Title = Title; 
         addPhoneProductDto.Description = Description; 
-        addPhoneProductDto.CreatorUserId = Int32.Parse(await _authService.GetCurrentUserId());
+        addPhoneProductDto.CreatorUserId = await _authService.GetCurrentUserId();
         addPhoneProductDto.ModelId = addPhoneModelDto.Id;
         addPhoneProductDto.InternalMemoryId= addPhoneInternalMemoryDto.Id;
         addPhoneProductDto.RAMId = addPhoneRAMDto.Id;

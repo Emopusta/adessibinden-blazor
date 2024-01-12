@@ -34,11 +34,9 @@
 
     protected async override Task OnInitializedAsync()
     {
-
         LoadingAction(true);
 
-
-        var currentUserId = Int32.Parse(await _authService.GetCurrentUserId());
+        var currentUserId = await _authService.GetCurrentUserId();
         favourites = await _userFavouriteProductService.GetByUserIdUserFavouriteProducts(currentUserId);
 
 

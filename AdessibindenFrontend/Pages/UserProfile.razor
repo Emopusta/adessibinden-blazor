@@ -62,9 +62,8 @@
     [CascadingParameter]
     public Action<bool> LoadingAction { get; set; }
 
-    private string UserId { get; set; }
+    private int UserId { get; set; }
     public string UserEmail { get; set; }
-    private int CastedUserId;
 
     public bool Loading { get; set; } = true;
 
@@ -83,9 +82,8 @@
 
         UserId = await _authService.GetCurrentUserId();
         UserEmail = await _authService.GetCurrentUserEmail();
-        CastedUserId = Int32.Parse(UserId);
 
-        userProfileResponse = await _userProfileService.GetProfile(CastedUserId);
+        userProfileResponse = await _userProfileService.GetProfile(UserId);
         isProfileLoaded = userProfileResponse.Success;
 
         if (isProfileLoaded)
@@ -103,7 +101,7 @@
     }
     private async Task CreateProfile()
     {
-        var emptyUser = new CreateUserProfileDto(){ UserId = CastedUserId };
+        var emptyUser = new CreateUserProfileDto() { UserId = UserId };
         await _userProfileService.CreateProfile(emptyUser);
         RefreshPage();
     }
@@ -125,7 +123,7 @@
         updateUserProfileDto.FirstName ??= userProfileResponse.Data.FirstName;
         updateUserProfileDto.LastName ??= userProfileResponse.Data.LastName;
         updateUserProfileDto.Address ??= userProfileResponse.Data.Address;
-        updateUserProfileDto.UserId = CastedUserId;
+        updateUserProfileDto.UserId = UserId;
         updateUserProfileDto.BirthDate ??= userProfileResponse.Data.BirthDate;
         if (updateUserProfileDto.BirthDate != null)
         {

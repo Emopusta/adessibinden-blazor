@@ -70,7 +70,7 @@
     {
         LoadingAction(true);
 
-        CurrentUserId = Int32.Parse(await _authService.GetCurrentUserId());
+        CurrentUserId = await _authService.GetCurrentUserId();
 
         productDetails = await _phoneProductService.GetByIdDetails(Int32.Parse(PhoneProductId));
 
