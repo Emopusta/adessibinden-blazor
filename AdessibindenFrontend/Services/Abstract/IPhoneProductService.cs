@@ -9,7 +9,7 @@ namespace AdessibindenFrontend.Services.Abstract
     public interface IPhoneProductService
     {
         Task<RequestResult<GetAllPhoneProductFeaturesDto>> GetFeatures();
-        Task<RequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int id);
+        Task<RequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int productId);
         Task<RequestResult<CreatedPhoneProductResponse>> CreatePhoneProduct(AddPhoneProductDto payload);
     }
 }

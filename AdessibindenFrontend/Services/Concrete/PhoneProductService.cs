@@ -25,9 +25,9 @@ namespace AdessibindenFrontend.Services.Concrete
             return result;
         }
 
-        public Task<RequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int id)
+        public Task<RequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int productId)
         {
-            var response = _httpClient.GetFromJsonAsync<RequestResult<GetByIdDetailsPhoneProductResponse>>($"/api/PhoneProducts/{id}");
+            var response = _httpClient.GetFromJsonAsync<RequestResult<GetByIdDetailsPhoneProductResponse>>($"/api/PhoneProducts/{productId}");
             return response;
         }
 

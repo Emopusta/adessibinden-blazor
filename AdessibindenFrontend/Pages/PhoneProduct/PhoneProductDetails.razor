@@ -1,4 +1,4 @@
-﻿@page "/phone-product/{PhoneProductId}"
+﻿@page "/phone-product/{ProductId}"
 
 @using AdessibindenFrontend.Pages.Components
 @using AdessibindenFrontend.Services.Abstract
@@ -10,7 +10,7 @@
 {
     <div class="bg-light">
 
-        <FavouriteOperationsComponent ProductId="@Int32.Parse(PhoneProductId)"></FavouriteOperationsComponent>
+        <FavouriteOperationsComponent ProductId="@Int32.Parse(ProductId)"></FavouriteOperationsComponent>
 
         <div class=" d-flex align-items-center justify-content-center">
             <div class="container mt-2 mb-5">
@@ -58,7 +58,7 @@
     public Action<bool> LoadingAction { get; set; }
 
     [Parameter]
-    public string PhoneProductId { get; set; } // refactor change this to ProductId (in backend too)
+    public string ProductId { get; set; }
 
     public bool isLoadSuccess { get; set; }
 
@@ -68,7 +68,7 @@
     {
         LoadingAction(true);
 
-        productDetails = await _phoneProductService.GetByIdDetails(Int32.Parse(PhoneProductId));
+        productDetails = await _phoneProductService.GetByIdDetails(Int32.Parse(ProductId));
 
         isLoadSuccess = productDetails.Success;
 
