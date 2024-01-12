@@ -1,6 +1,7 @@
 ﻿
 @using AdessibindenFrontend.Services.Abstract
 @inject IUserFavouriteProductService _userFavouriteProductService
+@inject IAuthService _authService
 
 <div class="m-3 text-end">
     <span class="me-2">Favourite</span>
@@ -25,15 +26,15 @@
 
 @code {
     [Parameter]
-    public int CurrentUserId { get; set; } 
-
-    [Parameter]
     public int ProductId { get; set; }
+
+    public int CurrentUserId { get; set; } 
 
     private bool isFavourite { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
+        CurrentUserId = await _authService.GetCurrentUserId();
 
         CheckIsFavourite();
 

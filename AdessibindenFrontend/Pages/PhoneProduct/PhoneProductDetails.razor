@@ -10,7 +10,7 @@
 {
     <div class="bg-light">
 
-        <FavouriteOperationsComponent ProductId="@Int32.Parse(PhoneProductId)" CurrentUserId="@CurrentUserId"></FavouriteOperationsComponent>
+        <FavouriteOperationsComponent ProductId="@Int32.Parse(PhoneProductId)"></FavouriteOperationsComponent>
 
         <div class=" d-flex align-items-center justify-content-center">
             <div class="container mt-2 mb-5">
@@ -60,8 +60,6 @@
     [Parameter]
     public string PhoneProductId { get; set; } // refactor change this to ProductId (in backend too)
 
-    public int CurrentUserId { get; set; }
-
     public bool isLoadSuccess { get; set; }
 
     public IRequestResult<GetByIdDetailsPhoneProductResponse> productDetails;
@@ -69,8 +67,6 @@
     protected override async Task OnInitializedAsync()
     {
         LoadingAction(true);
-
-        CurrentUserId = await _authService.GetCurrentUserId();
 
         productDetails = await _phoneProductService.GetByIdDetails(Int32.Parse(PhoneProductId));
 
