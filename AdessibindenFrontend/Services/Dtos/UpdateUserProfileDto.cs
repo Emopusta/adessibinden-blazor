@@ -1,4 +1,4 @@
-﻿using Application.Features.UserProfiles.Commands.Dtos;
+﻿using Application.Features.UserProfiles.Dtos;
 
 namespace AdessibindenFrontend.Services.Dtos
 {
