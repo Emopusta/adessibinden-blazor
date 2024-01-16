@@ -15,6 +15,11 @@ namespace AdessibindenFrontend.Services
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IUserFavouriteProductService, UserFavouriteProductService>();
 
+            services.AddScoped<IPhoneRAMService, PhoneRAMService>();
+            services.AddScoped<IPhoneModelService , PhoneModelService>();
+            services.AddScoped<IPhoneInternalMemoryService, PhoneInternalMemoryService>();
+            services.AddScoped<IPhoneBrandService, PhoneBrandService>();
+
             return services;
         }
     }

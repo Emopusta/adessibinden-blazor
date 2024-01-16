@@ -5,8 +5,16 @@
 @using AdessibindenFrontend.Services.Results
 @using AdessibindenFrontend.Shared
 @using Application.Features.Colors.Queries.GetAll
-@using Application.Features.PhoneProducts.Dtos
+@using Application.Features.PhoneProductFeatures.PhoneBrands.Queries.GetAllList
+@using Application.Features.PhoneProductFeatures.PhoneInternalMemories.Queries.GetAllList
+@using Application.Features.PhoneProductFeatures.PhoneModels.Queries.GetByBrandId
+@using Application.Features.PhoneProductFeatures.PhoneRAMs.Queries.GetAllList
 @using Core.Application.Responses
+
+@inject IPhoneBrandService _phoneBrandService
+@inject IPhoneInternalMemoryService _phoneInternalMemoryService
+@inject IPhoneModelService _phoneModelService
+@inject IPhoneRAMService _phoneRAMService
 @inject IPhoneProductService _phoneProductService
 @inject IAuthService _authService
 @inject IColorService _colorService
@@ -43,7 +51,7 @@
         <div class="border border-2 border-light shadow w-75 m-auto mt-3 row">
             <div class="col-3">
                 <h5 class="text-center m-auto">Brand</h5>
-                @foreach (var brand in productFeatures.Data.Brands)
+                @foreach (var brand in phoneBrands.Data)
                     {
                     <div class="my-3 p-2">
                         <div class="form-check">
@@ -54,31 +62,27 @@
                     }
             </div>
             <div class="col-3">
-                @if (addPhoneBrandDto.Id != NullValue)
+                @if (addPhoneBrandDto.Id != NullValue && isPhoneModelsLoaded)
                 {
                     <h5 class="text-center m-auto">Model</h5>
                     
-                    @foreach (var model in productFeatures.Data.Models)
+                    @foreach (var model in phoneModels.Data)
                         {
-
-                        @if (addPhoneBrandDto.Id == model.BrandId)
-                            {
-                            <div class="my-3 p-2">
-                                <div class="form-check">
-                                    <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Id, model.Name);}" class="form-check-input" value="@($"{(model.Name == addPhoneModelDto.Name)}")">
-                                    <label class="form-check-label" for="@($"model-{model.Id}")">@model.Name</label>
-                                </div>
+                        <div class="my-3 p-2">
+                            <div class="form-check">
+                                <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Id, model.Name);}" class="form-check-input" value="@($"{(model.Name == addPhoneModelDto.Name)}")">
+                                <label class="form-check-label" for="@($"model-{model.Id}")">@model.Name</label>
                             </div>
-                            }
+                        </div>  
                         }
                 }
             </div>
             <div class="col-3">
-                @if (addPhoneModelDto.Id != NullValue)
+                @if (addPhoneModelDto.Id != NullValue && isPhoneInternalMemoriesLoaded)
                 {
                     <h5 class="text-center m-auto">Internal Memory</h5>
 
-                    @foreach (var internalMemory in productFeatures.Data.InternalMemories)
+                    @foreach (var internalMemory in phoneInternalMemories.Data)
                     {
                         <div class="my-3 p-2">
                             <div class="form-check">
@@ -91,11 +95,11 @@
                 }
             </div>
             <div class="col-3">
-                @if (addPhoneInternalMemoryDto.Id != NullValue)
+                @if (addPhoneInternalMemoryDto.Id != NullValue && isPhoneRAMsLoaded)
                 {
                     <h5 class="text-center m-auto">RAM</h5>
                     
-                    foreach (var RAM in productFeatures.Data.PhoneRAMs)
+                    foreach (var RAM in phoneRAMs.Data)
                     {
                         
                         <div class="my-3 p-2">
@@ -158,7 +162,14 @@
     public AddPhoneModelDto addPhoneModelDto = new();
     public AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
 
-    public IRequestResult<GetAllPhoneProductFeaturesDto> productFeatures;
+    public IRequestResult<List<GetAllListPhoneBrandDto>> phoneBrands;
+    private bool isPhoneBrandsLoaded = false;
+    public IRequestResult<List<GetByBrandIdPhoneModelDto>> phoneModels;
+    private bool isPhoneModelsLoaded = false;
+    public IRequestResult<List<GetAllListPhoneInternalMemoryDto>> phoneInternalMemories;
+    private bool isPhoneInternalMemoriesLoaded = false;
+    public IRequestResult<List<GetAllListPhoneRAMDto>> phoneRAMs;
+    private bool isPhoneRAMsLoaded = false;
     public IRequestResult<GetListResponse<GetAllColorsListItemDto>> colors;
 
     protected override async Task OnInitializedAsync()
@@ -166,51 +177,69 @@
         LoadingAction(true);
 
 
-        productFeatures = await _phoneProductService.GetFeatures();
+        phoneBrands = await _phoneBrandService.GetAll();
 
-        colors = await _colorService.GetAll(0,10);
+        colors = await _colorService.GetAll(0,10); // todo: refactor paginated
 
-        isLoadSuccess = productFeatures.Success && colors.Success;
+        isLoadSuccess = phoneBrands.Success && colors.Success;
 
         LoadingAction(false);
 
     }
-    void SelectBrand(int id, string name)
+    async void SelectBrand(int id, string name)
     {
         addPhoneBrandDto.Id = id;
         addPhoneBrandDto.Name = name;
 
+        phoneModels = await _phoneModelService.GetByBrandId(id);
+        isPhoneModelsLoaded = phoneModels.Success;
+
         ClearModel();
-        ClearInternalMemory();
-        ClearPhoneRAM();
+        
+        StateHasChanged();
     }
 
-    void SelectModel(int id, string name)
+    async void SelectModel(int id, string name)
     {
         addPhoneModelDto.Id = id;
         addPhoneModelDto.Name = name;
 
+        phoneInternalMemories = await _phoneInternalMemoryService.GetAll();
+        isPhoneInternalMemoriesLoaded = phoneInternalMemories.Success;
+
         ClearInternalMemory();
-        ClearPhoneRAM();
+        
+
+        StateHasChanged();
     }
 
     void ClearModel()
     {
         addPhoneModelDto.Id = NullValue;
         addPhoneModelDto.Name = string.Empty;
+
+        ClearInternalMemory();
+        ClearPhoneRAM();
     }
 
-    void SelectInternalMemory(int id, string capacity)
+    async void SelectInternalMemory(int id, string capacity)
     {
         addPhoneInternalMemoryDto.Id = id;
         addPhoneInternalMemoryDto.Capacity = capacity;
 
+        phoneRAMs = await _phoneRAMService.GetAll();
+        isPhoneRAMsLoaded = phoneRAMs.Success;
+
         ClearPhoneRAM();
+
+        StateHasChanged();
     }
     void ClearInternalMemory()
     {
         addPhoneInternalMemoryDto.Id = NullValue;
         addPhoneInternalMemoryDto.Capacity = string.Empty;
+
+        ClearPhoneRAM();
     }
 
     void SelectPhoneRAM(int id, string memory)

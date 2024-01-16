@@ -1,8 +1,6 @@
 ﻿using AdessibindenFrontend.Services.Abstract;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.PhoneProducts.Dtos;
 using Application.Features.ProductCategories.Queries.GetAllList;
-using System.Collections.Generic;
 using System.Net.Http.Json;
 
 namespace AdessibindenFrontend.Services.Concrete
