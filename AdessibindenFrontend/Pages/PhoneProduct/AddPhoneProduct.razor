@@ -41,7 +41,7 @@
             {
             <div class="my-3 p-2">
                     <div class="form-check">
-                        <input id="@($"color-{color.Id}")" @key="@($"color-{color.Id}")" name="color" type="radio" @onchange="eventArgs => {SelectColor(color.Id, color.Name);}" class="form-check-input">
+                        <input id="@($"color-{color.Id}")" @key="@($"color-{color.Id}")" name="color" type="radio" @onchange="eventArgs => {SelectColor(color.Id, color.Name);}" class="form-check-input" >
                         <label class="form-check-label" for="@($"color-{color.Id}")">@color.Name</label>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     {
                     <div class="my-3 p-2">
                         <div class="form-check">
-                            <input id="@($"brand-{brand.Id}")" @key="@($"brand-{brand.Id}")" name="brand" type="radio" @onchange="eventArgs => {SelectBrand(brand.Id, brand.Name);}" class="form-check-input">
+                            <input id="@($"brand-{brand.Id}")" @key="@($"brand-{brand.Id}")" name="brand" type="radio" @onchange="eventArgs => {SelectBrand(brand.Id, brand.Name);}" class="form-check-input" checked="@(brand.Id == addPhoneBrandDto.Id)">
                             <label class="form-check-label" for="@($"brand-{brand.Id}")">@brand.Name</label>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         {
                         <div class="my-3 p-2">
                             <div class="form-check">
-                                <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Id, model.Name);}" class="form-check-input" value="@($"{(model.Name == addPhoneModelDto.Name)}")">
+                                <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Id, model.Name);}" class="form-check-input" checked="@(model.Id == addPhoneModelDto.Id)">
                                 <label class="form-check-label" for="@($"model-{model.Id}")">@model.Name</label>
                             </div>
                         </div>  
@@ -86,7 +86,7 @@
                     {
                         <div class="my-3 p-2">
                             <div class="form-check">
-                                <input id="@($"internalMemory-{internalMemory.Id}")" @key="@($"internalMemory-{internalMemory.Id}")" name="internalMemory" type="radio" @onchange="eventArgs => {SelectInternalMemory(internalMemory.Id, internalMemory.Capacity);}" class="form-check-input" value="@($"{(internalMemory.Capacity == addPhoneInternalMemoryDto.Capacity)}")">
+                                <input id="@($"internalMemory-{internalMemory.Id}")" @key="@($"internalMemory-{internalMemory.Id}")" name="internalMemory" type="radio" @onchange="eventArgs => {SelectInternalMemory(internalMemory.Id, internalMemory.Capacity);}" class="form-check-input" checked="@(internalMemory.Id == addPhoneInternalMemoryDto.Id)">
                                 <label class="form-check-label" for="@($"internalMemory-{internalMemory.Id}")">@internalMemory.Capacity</label>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                         
                         <div class="my-3 p-2">
                             <div class="form-check">
-                                <input id="@($"ram-{RAM.Id}")" @key="@($"ram-{RAM.Id}")" name="RAM" type="radio" @onchange="eventArgs => {SelectPhoneRAM(RAM.Id, RAM.Memory);}" class="form-check-input" value="@($"{(RAM.Id == 0)}")" >
+                                <input id="@($"ram-{RAM.Id}")" @key="@($"ram-{RAM.Id}")" name="RAM" type="radio" @onchange="eventArgs => {SelectPhoneRAM(RAM.Id, RAM.Memory);}" class="form-check-input" checked="@(RAM.Id == addPhoneRAMDto.Id)" >
                                 <label class="form-check-label" for="@($"ram-{RAM.Id}")">@RAM.Memory</label>
                             </div>
                         </div>
