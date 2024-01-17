@@ -32,6 +32,7 @@
                         <h4 class="card-subtitle mb-1 mt-4 text-muted">Specifications:</h4>
 
                         <ul class="">
+                            <li class="list-group-item"><strong>Brand Name: </strong>@productDetails.Data.ModelBrandName</li>
                             <li class="list-group-item"><strong>Model Name: </strong>@productDetails.Data.ModelName</li>
                             <li class="list-group-item"><strong>Color: </strong>@productDetails.Data.ColorName</li>
                             <li class="list-group-item"><strong>Internal Memory Capacity: </strong>@productDetails.Data.InternalMemoryCapacity</li>
@@ -45,13 +46,22 @@
                         <div>
                             <h6>Creator User: </h6> <p>@productDetails.Data.ProductCreatorUserEmail</p>
                         </div>
+                        @if (CurrentUserId == productDetails.Data.ProductCreatorUserId && isCurrentUserLoaded)
+                        {
+                            <NavLink class="nav-link text-white" href="@($"update-product/phone/{ProductId}")">
+                                <button type="button" class="btn btn-primary btn-lg px-4 gap-3">
+                                    <span class="p-2">
+                                        Edit
+                                    </span>
+                                </button>
+                            </NavLink>
+                        }
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
+    
 }
 
 @code {
@@ -61,7 +71,10 @@
     [Parameter]
     public string ProductId { get; set; }
 
-    public bool isLoadSuccess { get; set; }
+    private bool isLoadSuccess { get; set; }
+
+    public int CurrentUserId { get; set; }
+    private bool isCurrentUserLoaded { get; set; } = false;
 
     public IRequestResult<GetByIdDetailsPhoneProductResponse> productDetails;
 
@@ -71,6 +84,8 @@
 
         productDetails = await _phoneProductService.GetByIdDetails(Int32.Parse(ProductId));
 
+        CurrentUserId = await _authService.GetCurrentUserId();
+        isCurrentUserLoaded = (CurrentUserId != 0);
         isLoadSuccess = productDetails.Success;
 
         LoadingAction(false);

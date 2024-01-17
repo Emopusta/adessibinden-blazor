@@ -2,7 +2,9 @@
 using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 using Application.Features.PhoneProducts.Commands.Create;
+using Application.Features.PhoneProducts.Commands.Update;
 using Application.Features.PhoneProducts.Queries.GetByIdDetails;
+using Application.Features.PhoneProducts.Queries.GetByIdDetailsForUpdate;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
@@ -33,6 +35,19 @@ namespace AdessibindenFrontend.Services.Concrete
             if (!result.Success) { _navigationManager.NavigateTo("/not-found"); }
             return result;
         }
+        public async Task<IRequestResult<GetByIdDetailsForUpdatePhoneProductResponse>> GetByIdDetailsForUpdate(int productId)
+        {
+            var response = await _httpClient.GetAsync($"/api/PhoneProducts/{productId}/update-details");
+            var result = response.Content.ReadFromJsonAsync<RequestResult<GetByIdDetailsForUpdatePhoneProductResponse>>().Result;
+            if (!result.Success) { _navigationManager.NavigateTo("/not-found"); }
+            return result;
+        }
 
+        public async Task<IRequestResult<UpdatedPhoneProductResponse>> UpdatePhoneProduct(UpdatePhoneProductDto payload)
+        {
+            var response = await _httpClient.PutAsJsonAsync("/api/PhoneProducts", payload);
+            var result = response.Content.ReadFromJsonAsync<RequestResult<UpdatedPhoneProductResponse>>().Result;
+            return result;
+        }
     }
 }

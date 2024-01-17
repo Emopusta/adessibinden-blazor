@@ -1,0 +1,314 @@
+﻿@page "/update-product/phone/{ProductId}"
+
+@using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Dtos
+@using AdessibindenFrontend.Services.Results
+@using AdessibindenFrontend.Shared
+@using Application.Features.Colors.Queries.GetAll
+@using Application.Features.PhoneProductFeatures.PhoneBrands.Queries.GetAllList
+@using Application.Features.PhoneProductFeatures.PhoneInternalMemories.Queries.GetAllList
+@using Application.Features.PhoneProductFeatures.PhoneModels.Queries.GetByBrandId
+@using Application.Features.PhoneProductFeatures.PhoneRAMs.Queries.GetAllList
+@using Application.Features.PhoneProducts.Commands.Update
+@using Application.Features.PhoneProducts.Queries.GetByIdDetails
+@using Application.Features.PhoneProducts.Queries.GetByIdDetailsForUpdate
+@using Core.Application.Responses
+
+@inject IPhoneBrandService _phoneBrandService
+@inject IPhoneInternalMemoryService _phoneInternalMemoryService
+@inject IPhoneModelService _phoneModelService
+@inject IPhoneRAMService _phoneRAMService
+@inject IPhoneProductService _phoneProductService
+@inject IAuthService _authService
+@inject IColorService _colorService
+@inject ProductCategoryStateContainer _productCategoryStateContainer
+
+
+@if (isLoadSuccess)
+{
+    <EditForm Model="updatePhoneProductDto" OnValidSubmit="UpdatePhoneProductDetails" class="w-50 m-auto mt-5">
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" @bind-value="Title" aria-describedby="inputGroup-sizing-default">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Description</span>
+            <input type="text-area" class="form-control" @bind-value="Description" aria-label="Description"></input>
+        </div>
+
+        <h5 class="text-center m-auto">Color</h5>
+        <div class="d-flex">
+            @foreach (var color in colors.Data.Items)
+            {
+                <div class="my-3 p-2">
+                    <div class="form-check">
+                        <input id="@($"color-{color.Id}")" @key="@($"color-{color.Id}")" @onchange="eventArgs => {SelectColor(color.Id, color.Name);}" name="color" type="radio" class="form-check-input" checked="@(color.Id == ColorId)">
+                        <label class="form-check-label" for="@($"color-{color.Id}")">@color.Name</label>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="border border-2 border-light shadow w-75 m-auto mt-3 row">
+            <div class="col-3">
+                <h5 class="text-center m-auto">Brand</h5>
+                @foreach (var brand in phoneBrands.Data)
+                {
+                    <div class="my-3 p-2">
+                        <div class="form-check">
+                            <input id="@($"brand-{brand.Id}")" @key="@($"brand-{brand.Id}")" name="brand" type="radio" @onchange="eventArgs => {SelectBrand(brand.Id, brand.Name);}" class="form-check-input" checked="@(brand.Id == addPhoneBrandDto.Id)">
+                            <label class="form-check-label" for="@($"brand-{brand.Id}")">@brand.Name</label>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-3">
+                @if (addPhoneBrandDto.Id != NullValue && isPhoneModelsLoaded)
+                {
+                    <h5 class="text-center m-auto">Model</h5>
+
+                    @foreach (var model in phoneModels.Data)
+                    {
+                        <div class="my-3 p-2">
+                            <div class="form-check">
+                                <input id="@($"model-{model.Id}")" @key="@($"model-{model.Id}")" name="model" type="radio" @onchange="eventArgs => {SelectModel(model.Id, model.Name);}" class="form-check-input" checked="@(model.Id == addPhoneModelDto.Id)">
+                                <label class="form-check-label" for="@($"model-{model.Id}")">@model.Name</label>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="col-3">
+                @if (addPhoneModelDto.Id != NullValue && isPhoneInternalMemoriesLoaded)
+                {
+                    <h5 class="text-center m-auto">Internal Memory</h5>
+
+                    @foreach (var internalMemory in phoneInternalMemories.Data)
+                    {
+                        <div class="my-3 p-2">
+                            <div class="form-check">
+                                <input id="@($"internalMemory-{internalMemory.Id}")" @key="@($"internalMemory-{internalMemory.Id}")" name="internalMemory" type="radio" @onchange="eventArgs => {SelectInternalMemory(internalMemory.Id, internalMemory.Capacity);}" class="form-check-input" checked="@(internalMemory.Id == addPhoneInternalMemoryDto.Id)">
+                                <label class="form-check-label" for="@($"internalMemory-{internalMemory.Id}")">@internalMemory.Capacity</label>
+                            </div>
+                        </div>
+
+                    }
+                }
+            </div>
+            <div class="col-3">
+                @if (addPhoneInternalMemoryDto.Id != NullValue && isPhoneRAMsLoaded)
+                {
+                    <h5 class="text-center m-auto">RAM</h5>
+
+                    foreach (var RAM in phoneRAMs.Data)
+                    {
+
+                        <div class="my-3 p-2">
+                            <div class="form-check">
+                                <input id="@($"ram-{RAM.Id}")" @key="@($"ram-{RAM.Id}")" name="RAM" type="radio" @onchange="eventArgs => {SelectPhoneRAM(RAM.Id, RAM.Memory);}" class="form-check-input" checked="@(RAM.Id == addPhoneRAMDto.Id)">
+                                <label class="form-check-label" for="@($"ram-{RAM.Id}")">@RAM.Memory</label>
+                            </div>
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="m-3">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked="@(UsageStatus)"/>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    İkinci El
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked="@(!UsageStatus)" />
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Sıfır
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Price</span>
+            <input type="text" class="form-control" aria-label="Price" @bind-value="Price">
+        </div>
+
+        <button class="btn btn-primary w-100 py-2 btn-success mt-5" type="submit">Save</button>
+
+
+    </EditForm>
+}
+
+
+@code {
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
+
+    [Parameter]
+    public string ProductId { get; set; }
+
+    private bool UsageStatus { get; set; }
+
+    public bool isLoadSuccess { get; set; }
+    public int NullValue { get; } = 0;
+
+    public string Description { get; set; }
+    public string Title { get; set; }
+    public int ColorId { get; set; }
+    public string Price { get; set; }
+
+    public UpdatePhoneProductDto updatePhoneProductDto = new();
+
+    public AddPhoneBrandDto addPhoneBrandDto = new();
+    public AddPhoneRAMDto addPhoneRAMDto = new();
+    public AddPhoneModelDto addPhoneModelDto = new();
+    public AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
+
+    public IRequestResult<List<GetAllListPhoneBrandDto>> phoneBrands;
+    private bool isPhoneBrandsLoaded = false;
+    public IRequestResult<List<GetByBrandIdPhoneModelDto>> phoneModels;
+    private bool isPhoneModelsLoaded = false;
+    public IRequestResult<List<GetAllListPhoneInternalMemoryDto>> phoneInternalMemories;
+    private bool isPhoneInternalMemoriesLoaded = false;
+    public IRequestResult<List<GetAllListPhoneRAMDto>> phoneRAMs;
+    private bool isPhoneRAMsLoaded = false;
+    public IRequestResult<GetListResponse<GetAllColorsListItemDto>> colors;
+
+    public IRequestResult<GetByIdDetailsForUpdatePhoneProductResponse> productDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadingAction(true);
+
+
+        productDetails = await _phoneProductService.GetByIdDetailsForUpdate(Int32.Parse(ProductId));
+
+        phoneBrands = await _phoneBrandService.GetAll();
+        phoneModels = await _phoneModelService.GetByBrandId(productDetails.Data.ModelBrandId);
+        phoneInternalMemories = await _phoneInternalMemoryService.GetAll();
+        phoneRAMs = await _phoneRAMService.GetAll();
+
+        Title = productDetails.Data.ProductTitle;
+        Description = productDetails.Data.ProductDescription;
+        ColorId = productDetails.Data.ColorId;
+        Price = productDetails.Data.Price.ToString();
+        UsageStatus = productDetails.Data.UsageStatus;
+        addPhoneBrandDto.Id = productDetails.Data.ModelBrandId;
+        addPhoneBrandDto.Name = productDetails.Data.ModelBrandName;
+        isPhoneBrandsLoaded = true;
+        addPhoneModelDto.Id = productDetails.Data.ModelId;
+        addPhoneModelDto.Name = productDetails.Data.ModelName;
+        isPhoneModelsLoaded = true;
+        addPhoneInternalMemoryDto.Id = productDetails.Data.InternalMemoryId;
+        addPhoneInternalMemoryDto.Capacity = productDetails.Data.InternalMemoryCapacity;
+        isPhoneInternalMemoriesLoaded = true;
+        addPhoneRAMDto.Id = productDetails.Data.RAMId;
+        addPhoneRAMDto.Memory = productDetails.Data.RAMMemory;
+        isPhoneRAMsLoaded = true;
+        StateHasChanged();
+
+        colors = await _colorService.GetAll(0, 10); 
+
+        isLoadSuccess = productDetails.Success && colors.Success;
+
+        LoadingAction(false);
+
+    }
+    async void SelectBrand(int id, string name)
+    {
+        addPhoneBrandDto.Id = id;
+        addPhoneBrandDto.Name = name;
+
+        phoneModels = await _phoneModelService.GetByBrandId(id);
+        isPhoneModelsLoaded = phoneModels.Success;
+
+        ClearModel();
+
+        StateHasChanged();
+    }
+
+    async void SelectModel(int id, string name)
+    {
+        addPhoneModelDto.Id = id;
+        addPhoneModelDto.Name = name;
+
+        phoneInternalMemories = await _phoneInternalMemoryService.GetAll();
+        isPhoneInternalMemoriesLoaded = phoneInternalMemories.Success;
+
+        ClearInternalMemory();
+
+
+        StateHasChanged();
+    }
+
+    void ClearModel()
+    {
+        addPhoneModelDto.Id = NullValue;
+        addPhoneModelDto.Name = string.Empty;
+
+        ClearInternalMemory();
+        ClearPhoneRAM();
+    }
+
+    async void SelectInternalMemory(int id, string capacity)
+    {
+        addPhoneInternalMemoryDto.Id = id;
+        addPhoneInternalMemoryDto.Capacity = capacity;
+
+        phoneRAMs = await _phoneRAMService.GetAll();
+        isPhoneRAMsLoaded = phoneRAMs.Success;
+
+        ClearPhoneRAM();
+
+        StateHasChanged();
+    }
+    void ClearInternalMemory()
+    {
+        addPhoneInternalMemoryDto.Id = NullValue;
+        addPhoneInternalMemoryDto.Capacity = string.Empty;
+
+        ClearPhoneRAM();
+    }
+
+    void SelectPhoneRAM(int id, string memory)
+    {
+        addPhoneRAMDto.Id = id;
+        addPhoneRAMDto.Memory = memory;
+    }
+
+    void ClearPhoneRAM()
+    {
+        addPhoneRAMDto.Id = NullValue;
+        addPhoneRAMDto.Memory = string.Empty;
+    }
+    void SelectColor(int id, string name)
+    {
+        ColorId = id;
+    }
+
+    void SelectUsageStatus(bool isUsed)
+    {
+        UsageStatus = isUsed;
+    }
+    private async Task UpdatePhoneProductDetails()
+    {
+        updatePhoneProductDto.ProductCategoryId = productDetails.Data.ProductProductCategoryId;
+        updatePhoneProductDto.ProductId = Int32.Parse(ProductId);
+        updatePhoneProductDto.Title = Title;
+        updatePhoneProductDto.Description = Description;
+        updatePhoneProductDto.CreatorUserId = await _authService.GetCurrentUserId();
+        updatePhoneProductDto.ModelId = addPhoneModelDto.Id;
+        updatePhoneProductDto.InternalMemoryId = addPhoneInternalMemoryDto.Id;
+        updatePhoneProductDto.RAMId = addPhoneRAMDto.Id;
+        updatePhoneProductDto.ColorId = ColorId;
+        updatePhoneProductDto.UsageStatus = UsageStatus;
+        updatePhoneProductDto.Price = Decimal.Parse(Price);
+
+        await _phoneProductService.UpdatePhoneProduct(updatePhoneProductDto);
+    }
+
+}
