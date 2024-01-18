@@ -27,7 +27,7 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<DeletedUserFavouriteProductResponse>> DeleteFavourites(DeleteUserFavouriteProductDto deleteUserFavouriteProductDto)
         {
-            var response = await _httpClient.DeleteFromJsonAsync<RequestResult<DeletedUserFavouriteProductResponse>>($"/api/UserFavouriteProducts/UserId={deleteUserFavouriteProductDto.UserId}&ProductId={deleteUserFavouriteProductDto.ProductId}");
+            var response = await _httpClient.DeleteFromJsonAsync<RequestResult<DeletedUserFavouriteProductResponse>>($"/api/UserFavouriteProducts/{deleteUserFavouriteProductDto.UserId}/{deleteUserFavouriteProductDto.ProductId}");
             return response;
         }
 
@@ -40,7 +40,7 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<List<GetByUserIdUserFavouriteProductResponse>>> GetByUserIdUserFavouriteProducts(int userId)
         {
-            var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/getByUserId?UserId={userId}");
+            var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByUserId?UserId={userId}");
             var result = response.Content.ReadFromJsonAsync<RequestResult<List<GetByUserIdUserFavouriteProductResponse>>>().Result;
             return result;
         }

@@ -20,7 +20,7 @@ namespace AdessibindenFrontend.Services.Concrete
         {
 
 
-            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>>>($"/api/Products/get-by-creator/userId={creatorUserId}?PageIndex={pageRequest.PageIndex}&PageSize={pageRequest.PageSize}");
+            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>>>($"/api/Products/GetByCreator/{creatorUserId}?PageIndex={pageRequest.PageIndex}&PageSize={pageRequest.PageSize}");
                 return response;
 
             

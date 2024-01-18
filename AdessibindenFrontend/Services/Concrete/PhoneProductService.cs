@@ -31,7 +31,7 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<DeletedPhoneProductResponse>> DeletePhoneProduct(int productId)
         {
-            var response = await _httpClient.DeleteFromJsonAsync<RequestResult<DeletedPhoneProductResponse>>($"/api/PhoneProducts/ProductId={productId}");
+            var response = await _httpClient.DeleteFromJsonAsync<RequestResult<DeletedPhoneProductResponse>>($"/api/PhoneProducts/{productId}");
             return response;
         }
 
@@ -44,7 +44,7 @@ namespace AdessibindenFrontend.Services.Concrete
         }
         public async Task<IRequestResult<GetByIdDetailsForUpdatePhoneProductResponse>> GetByIdDetailsForUpdate(int productId)
         {
-            var response = await _httpClient.GetAsync($"/api/PhoneProducts/{productId}/update-details");
+            var response = await _httpClient.GetAsync($"/api/PhoneProducts/UpdateDetails/{productId}");
             var result = response.Content.ReadFromJsonAsync<RequestResult<GetByIdDetailsForUpdatePhoneProductResponse>>().Result;
             if (!result.Success) { _navigationManager.NavigateTo("/not-found"); }
             return result;
