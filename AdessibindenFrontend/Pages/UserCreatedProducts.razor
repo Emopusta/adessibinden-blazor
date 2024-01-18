@@ -1,0 +1,52 @@
+﻿@page "/user-created-products"
+@using AdessibindenFrontend.Services.Abstract
+@using AdessibindenFrontend.Services.Results
+@using Application.Features.Products.Queries.GetByCreatorUserIdPaginated
+@using Core.Application.Requests
+@using Core.Application.Responses
+
+@inject IAuthService _authService
+@inject IProductService _productService
+
+@if (isLoadSuccess)
+{
+    <h3 class="text-center mt-5 mb-5">Favourites</h3>
+    @foreach (var item in products.Data.Items)
+    {
+        <div class="w-25 m-auto mt-2 ">
+            <div class="card border-primary mb-3">
+                <NavLink class="nav-link text-white" href="@($"/phone-product/{item.ProductId}")">
+                    <div class="card-body text-primary">
+                        <p class="card-text text-center">@item.Title</p>
+                    </div>
+                </NavLink>
+            </div>
+        </div>
+    }
+
+}
+
+@code {
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
+
+    public bool isLoadSuccess { get; set; }
+    public int PageSize { get; set; } = 10;
+    public int PageIndex { get; set; } = 0;
+
+    public IRequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>> products;
+
+    protected async override Task OnInitializedAsync()
+    {
+        LoadingAction(true);
+
+        var currentUserId = await _authService.GetCurrentUserId();
+        var pageRequest = new PageRequest() { PageSize = PageSize, PageIndex = PageIndex };
+        products = await _productService.GetByCreatorUserIdPaginated(pageRequest ,currentUserId);
+
+
+        isLoadSuccess = products.Success;
+
+        LoadingAction(false);
+    }
+}
