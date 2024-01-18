@@ -1,0 +1,47 @@
+﻿@using AdessibindenFrontend.Services.Abstract
+@inject IPhoneProductService _phoneProductService
+@inject IAuthService _authService
+@inject NavigationManager _navigationManager
+
+
+@if(CurrentUserId == CreatorUserId)
+{
+    <button type="button" class="btn btn-danger btn-lg px-4 gap-3 mt-3 w-100" @onclick="DeleteProductWithId">
+        <span class="p-2">
+            Delete Product
+        </span>
+    </button>
+}
+
+@code {
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
+
+    [Parameter]
+    public int ProductId { get; set; }
+
+    public int CurrentUserId { get; set; }
+
+    public int CreatorUserId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        LoadingAction(true);
+
+        var product = await _phoneProductService.GetByIdDetails(ProductId);
+
+        CurrentUserId = await _authService.GetCurrentUserId();
+        CreatorUserId = product.Data.ProductCreatorUserId;
+
+        LoadingAction(false);
+    }
+
+    private async void DeleteProductWithId()
+    {
+        var result = await _phoneProductService.DeletePhoneProduct(ProductId);
+
+        if (result.Success)
+        {
+            _navigationManager.NavigateTo("home");
+        }
+    }
+}

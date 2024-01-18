@@ -2,6 +2,7 @@
 using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 using Application.Features.PhoneProducts.Commands.Create;
+using Application.Features.PhoneProducts.Commands.Delete;
 using Application.Features.PhoneProducts.Commands.Update;
 using Application.Features.PhoneProducts.Queries.GetByIdDetails;
 using Application.Features.PhoneProducts.Queries.GetByIdDetailsForUpdate;
@@ -26,6 +27,12 @@ namespace AdessibindenFrontend.Services.Concrete
             var response = await _httpClient.PostAsJsonAsync("/api/PhoneProducts", payload);
             var result = response.Content.ReadFromJsonAsync<RequestResult<CreatedPhoneProductResponse>>().Result;
             return result;
+        }
+
+        public async Task<IRequestResult<DeletedPhoneProductResponse>> DeletePhoneProduct(int productId)
+        {
+            var response = await _httpClient.DeleteFromJsonAsync<RequestResult<DeletedPhoneProductResponse>>($"/api/PhoneProducts/ProductId={productId}");
+            return response;
         }
 
         public async Task<IRequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int productId)

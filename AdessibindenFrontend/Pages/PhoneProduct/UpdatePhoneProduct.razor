@@ -22,7 +22,7 @@
 @inject IAuthService _authService
 @inject IColorService _colorService
 @inject ProductCategoryStateContainer _productCategoryStateContainer
-
+@inject NavigationManager _navigationManager
 
 @if (isLoadSuccess)
 {
@@ -138,7 +138,8 @@
         </div>
 
         <button class="btn btn-primary w-100 py-2 btn-success mt-5" type="submit">Save</button>
-
+        
+        <DeletePhoneProduct ProductId="@Int32.Parse(@ProductId)"></DeletePhoneProduct>
 
     </EditForm>
 }
@@ -296,11 +297,14 @@
     }
     private async Task UpdatePhoneProductDetails()
     {
+        var currentUserId = await _authService.GetCurrentUserId();
+        if (currentUserId != productDetails.Data.ProductCreatorUserId){ throw new Exception("This is not your product"); }
+
         updatePhoneProductDto.ProductCategoryId = productDetails.Data.ProductProductCategoryId;
         updatePhoneProductDto.ProductId = Int32.Parse(ProductId);
         updatePhoneProductDto.Title = Title;
         updatePhoneProductDto.Description = Description;
-        updatePhoneProductDto.CreatorUserId = await _authService.GetCurrentUserId();
+        updatePhoneProductDto.CreatorUserId = productDetails.Data.ProductCreatorUserId;
         updatePhoneProductDto.ModelId = addPhoneModelDto.Id;
         updatePhoneProductDto.InternalMemoryId = addPhoneInternalMemoryDto.Id;
         updatePhoneProductDto.RAMId = addPhoneRAMDto.Id;
@@ -308,7 +312,16 @@
         updatePhoneProductDto.UsageStatus = UsageStatus;
         updatePhoneProductDto.Price = Decimal.Parse(Price);
 
-        await _phoneProductService.UpdatePhoneProduct(updatePhoneProductDto);
+        var result = await _phoneProductService.UpdatePhoneProduct(updatePhoneProductDto);
+
+        if (result.Success)
+        {
+            _navigationManager.NavigateTo($"/phone-product/{ProductId}");
+        }
+        else
+        {
+            throw new Exception("Something went wrong!");
+        }
     }
 
 }
