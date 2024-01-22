@@ -6,7 +6,7 @@ namespace AdessibindenFrontend.Services.Abstract
 {
     public interface IColorService
     {
-        public Task<RequestResult<GetListResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize);
+        public Task<RequestResult<PaginateResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize);
     
     }
 }

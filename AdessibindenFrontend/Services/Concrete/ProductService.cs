@@ -16,11 +16,11 @@ namespace AdessibindenFrontend.Services.Concrete
             _httpClient = httpClient;
         }
 
-        public async Task<IRequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>>> GetByCreatorUserIdPaginated(PageRequest pageRequest, int creatorUserId)
+        public async Task<IRequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>>> GetByCreatorUserIdPaginated(PageRequest pageRequest, int creatorUserId)
         {
 
 
-            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>>>($"/api/Products/GetByCreator/{creatorUserId}?PageIndex={pageRequest.PageIndex}&PageSize={pageRequest.PageSize}");
+            var response = await _httpClient.GetFromJsonAsync<RequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>>>($"/api/Products/GetByCreator/{creatorUserId}?PageIndex={pageRequest.PageIndex}&PageSize={pageRequest.PageSize}");
                 return response;
 
             

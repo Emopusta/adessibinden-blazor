@@ -46,7 +46,7 @@
     private int PageSize { get; set; } = 5;
     private int PageIndex { get; set; } = 0;
 
-    private IRequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>> products;
+    private IRequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>> products;
 
     private int Count { get; set; }
     private int Pages { get; set; }

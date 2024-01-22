@@ -20,10 +20,10 @@ namespace AdessibindenFrontend.Services.Concrete
             _navigationManager = navigationManager;
         }
 
-        public async Task<RequestResult<GetListResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize)
+        public async Task<RequestResult<PaginateResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize)
         {
 
-            var response = await _httpClient.GetFromJsonAsync<RequestResult<GetListResponse<GetAllColorsListItemDto>>>($"/api/Colors?PageIndex={pageIndex}&PageSize={pageSize}");
+            var response = await _httpClient.GetFromJsonAsync<RequestResult<PaginateResponse<GetAllColorsListItemDto>>>($"/api/Colors?PageIndex={pageIndex}&PageSize={pageSize}");
             return response;
 
         }

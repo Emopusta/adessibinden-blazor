@@ -7,7 +7,7 @@ namespace AdessibindenFrontend.Services.Abstract
 {
     public interface IProductService
     {
-        public Task<IRequestResult<GetListResponse<GetByCreatorUserIdPaginatedDto>>> GetByCreatorUserIdPaginated(PageRequest pageRequest, int creatorUserId);
+        public Task<IRequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>>> GetByCreatorUserIdPaginated(PageRequest pageRequest, int creatorUserId);
 
     }
 }
