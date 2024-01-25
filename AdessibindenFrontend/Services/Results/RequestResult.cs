@@ -1,5 +1,4 @@
-﻿using Core.Utilities.Exceptions;
-
+﻿
 namespace AdessibindenFrontend.Services.Results
 {
     public class RequestResult<T> : IRequestResult<T>

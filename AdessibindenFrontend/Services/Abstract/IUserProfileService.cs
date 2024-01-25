@@ -1,9 +1,6 @@
 ﻿using AdessibindenFrontend.Services.Dtos;
+using AdessibindenFrontend.Services.Responses;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.UserProfiles.Commands.Create;
-using Application.Features.UserProfiles.Commands.Update;
-using Application.Features.UserProfiles.Dtos;
-using Application.Features.UserProfiles.Queries.GetByUserId;
 
 namespace AdessibindenFrontend.Services.Abstract
 {

@@ -1,6 +1,8 @@
-﻿namespace AdessibindenFrontend.Services.Dtos
+﻿using AdessibindenFrontend.Shared;
+
+namespace AdessibindenFrontend.Services.Dtos
 {
-    public class AddPhoneRAMDto
+    public class AddPhoneRAMDto : IDto
     {
         public int Id { get; set; }
         public string Memory { get; set; }

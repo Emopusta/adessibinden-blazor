@@ -1,4 +1,4 @@
-﻿using Core.Application.Dtos;
+﻿using AdessibindenFrontend.Shared;
 
 namespace AdessibindenFrontend.Services.Dtos
 {

@@ -1,10 +1,7 @@
-﻿using AdessibindenFrontend.Services.Results;
-using Application.Features.Auth.Commands.Login;
-using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.Register;
-using Application.Features.Auth.Commands.RevokeToken;
-using Core.Application.Dtos;
-using Core.Security.JWT;
+﻿using AdessibindenFrontend.Services.Dtos;
+using AdessibindenFrontend.Services.Responses;
+using AdessibindenFrontend.Services.Results;
+
 
 namespace AdessibindenFrontend.Services.Abstract
 {

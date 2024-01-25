@@ -1,5 +1,4 @@
-﻿
-using AdessibindenFrontend.Helpers;
+﻿using AdessibindenFrontend.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net;

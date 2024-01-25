@@ -1,5 +1,4 @@
-﻿using Domain.Models;
-
+﻿
 namespace AdessibindenFrontend.Shared
 {
     public class ProductCategoryStateContainer

@@ -1,8 +1,8 @@
-﻿using AdessibindenFrontend.Services.Abstract;
+﻿using AdessibindenFrontend.Core.Application.Requests;
+using AdessibindenFrontend.Core.Application.Responses;
+using AdessibindenFrontend.Services.Abstract;
+using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.Products.Queries.GetByCreatorUserIdPaginated;
-using Core.Application.Requests;
-using Core.Application.Responses;
 using System.Net.Http.Json;
 
 namespace AdessibindenFrontend.Services.Concrete

@@ -1,10 +1,7 @@
 ﻿using AdessibindenFrontend.Services.Dtos;
+using AdessibindenFrontend.Services.Responses;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.PhoneProducts.Commands.Create;
-using Application.Features.PhoneProducts.Commands.Delete;
-using Application.Features.PhoneProducts.Commands.Update;
-using Application.Features.PhoneProducts.Queries.GetByIdDetails;
-using Application.Features.PhoneProducts.Queries.GetByIdDetailsForUpdate;
+
 
 namespace AdessibindenFrontend.Services.Abstract
 {

@@ -1,5 +1,5 @@
-﻿using AdessibindenFrontend.Services.Results;
-using Application.Features.PhoneProductFeatures.PhoneInternalMemories.Queries.GetAllList;
+﻿using AdessibindenFrontend.Services.Dtos;
+using AdessibindenFrontend.Services.Results;
 
 namespace AdessibindenFrontend.Services.Abstract
 {

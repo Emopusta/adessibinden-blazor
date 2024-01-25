@@ -1,8 +1,13 @@
-﻿using Application.Features.UserProfiles.Dtos;
+﻿using AdessibindenFrontend.Shared;
 
 namespace AdessibindenFrontend.Services.Dtos
 {
-    public class UpdateUserProfileDtoLocal : UpdateUserProfileDto
+    public class UpdateUserProfileDto : IDto
     {
+        public int UserId { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Address { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }

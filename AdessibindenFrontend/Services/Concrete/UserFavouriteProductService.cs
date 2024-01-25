@@ -1,10 +1,7 @@
 ﻿using AdessibindenFrontend.Services.Abstract;
 using AdessibindenFrontend.Services.Dtos;
+using AdessibindenFrontend.Services.Responses;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.UserFavouriteProducts.Commands.Create;
-using Application.Features.UserFavouriteProducts.Commands.Delete;
-using Application.Features.UserFavouriteProducts.Queries.GetByProductAndUserId;
-using Application.Features.UserFavouriteProducts.Queries.GetByUserId;
 using System.Net.Http.Json;
 
 namespace AdessibindenFrontend.Services.Concrete

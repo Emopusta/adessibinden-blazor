@@ -2,10 +2,9 @@
 
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Dtos
+@using AdessibindenFrontend.Services.Responses
 @using AdessibindenFrontend.Services.Results
-@using Application.Features.Auth.Commands.Register
-@using Application.Features.UserProfiles.Commands.Update
-@using Core.Application.Dtos
+
 @inject IAuthService _authService;
 @inject IUserProfileService _userProfileService;
 
@@ -41,7 +40,7 @@
 
 @code {
     private string verifyPassword;
-    public UpdateUserProfileDtoLocal updateUserProfileDto = new();
+    public UpdateUserProfileDto updateUserProfileDto = new();
     public UserForRegisterDto registerDto = new();
 
     public IRequestResult<RegisteredResponse> registeredResponse;

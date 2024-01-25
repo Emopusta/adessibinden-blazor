@@ -1,12 +1,9 @@
-﻿using AdessibindenFrontend.Services.Abstract;
+﻿using AdessibindenFrontend.Core.Security;
+using AdessibindenFrontend.Services.Abstract;
+using AdessibindenFrontend.Services.Dtos;
+using AdessibindenFrontend.Services.Responses;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.Auth.Commands.Login;
-using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.Register;
-using Application.Features.Auth.Commands.RevokeToken;
 using Blazored.LocalStorage;
-using Core.Application.Dtos;
-using Core.Security.JWT;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;

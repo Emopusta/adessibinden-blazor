@@ -1,10 +1,8 @@
-﻿using AdessibindenFrontend.Helpers;
-using AdessibindenFrontend.Services.Abstract;
+﻿using AdessibindenFrontend.Core.Security;
+using AdessibindenFrontend.Helpers;
+using AdessibindenFrontend.Services.Responses;
 using AdessibindenFrontend.Services.Results;
-using Application.Features.Auth.Commands.RefreshToken;
 using Blazored.LocalStorage;
-using Core.Security.JWT;
-using Domain.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
