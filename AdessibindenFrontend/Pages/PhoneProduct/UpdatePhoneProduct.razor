@@ -47,7 +47,7 @@
         <div class="border border-2 border-light shadow w-75 m-auto mt-3 row">
             <div class="col-3">
                 <h5 class="text-center m-auto">Brand</h5>
-                @foreach (var brand in phoneBrands.Data)
+                @foreach (var brand in phoneBrands.Data.Data)
                 {
                     <div class="my-3 p-2">
                         <div class="form-check">
@@ -62,7 +62,7 @@
                 {
                     <h5 class="text-center m-auto">Model</h5>
 
-                    @foreach (var model in phoneModels.Data)
+                    @foreach (var model in phoneModels.Data.Data)
                     {
                         <div class="my-3 p-2">
                             <div class="form-check">
@@ -78,7 +78,7 @@
                 {
                     <h5 class="text-center m-auto">Internal Memory</h5>
 
-                    @foreach (var internalMemory in phoneInternalMemories.Data)
+                    @foreach (var internalMemory in phoneInternalMemories.Data.Data)
                     {
                         <div class="my-3 p-2">
                             <div class="form-check">
@@ -95,7 +95,7 @@
                 {
                     <h5 class="text-center m-auto">RAM</h5>
 
-                    foreach (var RAM in phoneRAMs.Data)
+                    foreach (var RAM in phoneRAMs.Data.Data)
                     {
 
                         <div class="my-3 p-2">
@@ -162,13 +162,13 @@
     public AddPhoneModelDto addPhoneModelDto = new();
     public AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
 
-    public IRequestResult<List<GetAllListPhoneBrandDto>> phoneBrands;
+    public IRequestResult<ListResponse<GetAllListPhoneBrandDto>> phoneBrands;
     private bool isPhoneBrandsLoaded = false;
-    public IRequestResult<List<GetByBrandIdPhoneModelDto>> phoneModels;
+    public IRequestResult<ListResponse<GetByBrandIdPhoneModelDto>> phoneModels;
     private bool isPhoneModelsLoaded = false;
-    public IRequestResult<List<GetAllListPhoneInternalMemoryDto>> phoneInternalMemories;
+    public IRequestResult<ListResponse<GetAllListPhoneInternalMemoryDto>> phoneInternalMemories;
     private bool isPhoneInternalMemoriesLoaded = false;
-    public IRequestResult<List<GetAllListPhoneRAMDto>> phoneRAMs;
+    public IRequestResult<ListResponse<GetAllListPhoneRAMDto>> phoneRAMs;
     private bool isPhoneRAMsLoaded = false;
     public IRequestResult<PaginateResponse<GetAllColorsListItemDto>> colors;
 

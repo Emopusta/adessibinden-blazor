@@ -1,11 +1,12 @@
-﻿using AdessibindenFrontend.Services.Dtos;
+﻿using AdessibindenFrontend.Core.Application.Responses;
+using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 
 namespace AdessibindenFrontend.Services.Abstract
 {
     public interface IProductCategoryService
     {
-        Task<RequestResult<List<GetAllListProductCategoryDto>>> GetAll();
+        Task<RequestResult<ListResponse<GetAllListProductCategoryDto>>> GetAll();
 
     }
 }

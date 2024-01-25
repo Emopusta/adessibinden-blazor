@@ -1,4 +1,5 @@
-﻿using AdessibindenFrontend.Services.Abstract;
+﻿using AdessibindenFrontend.Core.Application.Responses;
+using AdessibindenFrontend.Services.Abstract;
 using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Responses;
 using AdessibindenFrontend.Services.Results;
@@ -35,10 +36,10 @@ namespace AdessibindenFrontend.Services.Concrete
             return result;
         }
 
-        public async Task<IRequestResult<List<GetByUserIdUserFavouriteProductResponse>>> GetByUserIdUserFavouriteProducts(int userId)
+        public async Task<IRequestResult<ListResponse<GetByUserIdUserFavouriteProductResponse>>> GetByUserIdUserFavouriteProducts(int userId)
         {
             var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByUserId?UserId={userId}");
-            var result = response.Content.ReadFromJsonAsync<RequestResult<List<GetByUserIdUserFavouriteProductResponse>>>().Result;
+            var result = response.Content.ReadFromJsonAsync<RequestResult<ListResponse<GetByUserIdUserFavouriteProductResponse>>>().Result;
             return result;
         }
     }
