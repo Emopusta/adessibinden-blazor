@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using AdessibindenFrontend.Services.Results
 @using Core.Application.Responses
-
+@inject NavigationManager _navigationManager
 
 <div class="px-4 py-5 my-5 text-center">
     <img class="d-block mx-auto mb-4 w-auto" src="./adesso.png" alt="" width="72" height="57">
@@ -9,7 +9,7 @@
     <div class="col-lg-6 mx-auto">
         <p class="lead mb-4">Discover your desired items on this website, where you can make purchases at any price, from any location, and in any condition. Start your search now!</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Search</button>
+            <button type="button" class="btn btn-primary btn-lg px-4 gap-3" @onclick='() => _navigationManager.NavigateTo("search")'>Search</button>
         </div>
     </div>
 </div>
