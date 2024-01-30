@@ -14,6 +14,7 @@
 @inject IAuthService _authService
 @inject IColorService _colorService
 @inject ProductCategoryStateContainer _productCategoryStateContainer
+@inject NavigationManager _navigationManager
 
 
 @if (isLoadSuccess)
@@ -270,7 +271,16 @@
         addPhoneProductDto.UsageStatus = UsageStatus;
         addPhoneProductDto.Price = Decimal.Parse(Price);
 
-        await _phoneProductService.CreatePhoneProduct(addPhoneProductDto);
+        var result = await _phoneProductService.CreatePhoneProduct(addPhoneProductDto);
+
+        if (result.Success)
+        {
+            _navigationManager.NavigateTo($"/phone-product/{result.Data.ProductId}");
+        }
+        else
+        {
+            throw new Exception("Something went wrong!");
+        }
     }
 
 }
