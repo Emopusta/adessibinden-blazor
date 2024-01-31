@@ -25,6 +25,9 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public Action<bool> LoadingAction { get; set; }
+
     [Parameter]
     public int ProductId { get; set; }
 
@@ -34,9 +37,13 @@
 
     protected async override Task OnInitializedAsync()
     {
+        LoadingAction(true);
+
         CurrentUserId = await _authService.GetCurrentUserId();
 
         CheckIsFavourite();
+
+        LoadingAction(false);
 
     }
 
@@ -58,7 +65,7 @@
     private async void CheckIsFavourite()
     {
         var result = await _userFavouriteProductService.GetCurrentFavouriteByUserIdAndProductId(new Services.Dtos.GetByProductAndUserIdFavouriteProductDto() { ProductId = ProductId, UserId = CurrentUserId });
-        isFavourite = result.Success;
+        isFavourite = (result.Data != null);
         StateHasChanged();
     }
 }
