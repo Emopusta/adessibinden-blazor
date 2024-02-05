@@ -25,7 +25,7 @@ namespace AdessibindenFrontend.Services.Concrete
 
         public async Task<IRequestResult<GetUserProfileResponse>> GetProfile(int userId)
         {
-            var response = await _httpClient.GetAsync($"/api/UserProfiles/GetById?UserId={userId}");
+            var response = await _httpClient.GetAsync($"/api/UserProfiles/GetById/{userId}");
             var result = response.Content.ReadFromJsonAsync<RequestResult<GetUserProfileResponse>>().Result;
             return result;
         }
