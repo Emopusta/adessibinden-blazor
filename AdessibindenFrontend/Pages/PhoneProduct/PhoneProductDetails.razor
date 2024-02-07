@@ -4,13 +4,13 @@
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Responses
 @using AdessibindenFrontend.Services.Results
+
 @inject IPhoneProductService _phoneProductService
 @inject IAuthService _authService
 
 @if (isLoadSuccess)
 {
     <div class="bg-light">
-
         <FavouriteOperationsComponent ProductId="@Int32.Parse(ProductId)"></FavouriteOperationsComponent>
 
         <div class=" d-flex align-items-center justify-content-center">
@@ -61,7 +61,6 @@
             </div>
         </div>
     </div>
-    
 }
 
 @code {
@@ -90,5 +89,4 @@
 
         LoadingAction(false);
     }
-
 }

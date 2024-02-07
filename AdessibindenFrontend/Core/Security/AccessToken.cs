@@ -1,19 +1,18 @@
-﻿namespace AdessibindenFrontend.Core.Security
+﻿namespace AdessibindenFrontend.Core.Security;
+
+public class AccessToken
 {
-    public class AccessToken
+    public string Token { get; set; }
+    public DateTime Expiration { get; set; }
+
+    public AccessToken()
     {
-        public string Token { get; set; }
-        public DateTime Expiration { get; set; }
+        Token = string.Empty;
+    }
 
-        public AccessToken()
-        {
-            Token = string.Empty;
-        }
-
-        public AccessToken(string token, DateTime expiration)
-        {
-            Token = token;
-            Expiration = expiration;
-        }
+    public AccessToken(string token, DateTime expiration)
+    {
+        Token = token;
+        Expiration = expiration;
     }
 }

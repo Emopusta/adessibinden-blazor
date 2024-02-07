@@ -2,11 +2,9 @@
 using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 
-namespace AdessibindenFrontend.Services.Abstract
+namespace AdessibindenFrontend.Services.Abstract;
+
+public interface IPhoneModelService
 {
-    public interface IPhoneModelService
-    {
-        Task<IRequestResult<ListResponse<GetByBrandIdPhoneModelDto>>> GetByBrandId(int brandId);
-        
-    }
+    Task<IRequestResult<ListResponse<GetByBrandIdPhoneModelDto>>> GetByBrandId(int brandId);
 }

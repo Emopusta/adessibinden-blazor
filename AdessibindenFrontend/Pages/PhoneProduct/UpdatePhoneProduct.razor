@@ -133,7 +133,6 @@
         <button class="btn btn-primary w-100 py-2 btn-success mt-5" type="submit">Save</button>
         
         <DeletePhoneProduct ProductId="@Int32.Parse(@ProductId)"></DeletePhoneProduct>
-
     </EditForm>
 }
 
@@ -147,37 +146,36 @@
 
     private bool UsageStatus { get; set; }
 
-    public bool isLoadSuccess { get; set; }
-    public int NullValue { get; } = 0;
+    private bool isLoadSuccess { get; set; }
+    private int NullValue { get; } = 0;
 
-    public string Description { get; set; }
-    public string Title { get; set; }
-    public int ColorId { get; set; }
-    public string Price { get; set; }
+    private string Description { get; set; }
+    private string Title { get; set; }
+    private int ColorId { get; set; }
+    private string Price { get; set; }
 
-    public UpdatePhoneProductDto updatePhoneProductDto = new();
+    private UpdatePhoneProductDto updatePhoneProductDto = new();
 
-    public AddPhoneBrandDto addPhoneBrandDto = new();
-    public AddPhoneRAMDto addPhoneRAMDto = new();
-    public AddPhoneModelDto addPhoneModelDto = new();
-    public AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
+    private AddPhoneBrandDto addPhoneBrandDto = new();
+    private AddPhoneRAMDto addPhoneRAMDto = new();
+    private AddPhoneModelDto addPhoneModelDto = new();
+    private AddPhoneInternalMemoryDto addPhoneInternalMemoryDto = new();
 
-    public IRequestResult<ListResponse<GetAllListPhoneBrandDto>> phoneBrands;
+    private IRequestResult<ListResponse<GetAllListPhoneBrandDto>> phoneBrands;
     private bool isPhoneBrandsLoaded = false;
-    public IRequestResult<ListResponse<GetByBrandIdPhoneModelDto>> phoneModels;
+    private IRequestResult<ListResponse<GetByBrandIdPhoneModelDto>> phoneModels;
     private bool isPhoneModelsLoaded = false;
-    public IRequestResult<ListResponse<GetAllListPhoneInternalMemoryDto>> phoneInternalMemories;
+    private IRequestResult<ListResponse<GetAllListPhoneInternalMemoryDto>> phoneInternalMemories;
     private bool isPhoneInternalMemoriesLoaded = false;
-    public IRequestResult<ListResponse<GetAllListPhoneRAMDto>> phoneRAMs;
+    private IRequestResult<ListResponse<GetAllListPhoneRAMDto>> phoneRAMs;
     private bool isPhoneRAMsLoaded = false;
-    public IRequestResult<PaginateResponse<GetAllColorsListItemDto>> colors;
+    private IRequestResult<PaginateResponse<GetAllColorsListItemDto>> colors;
 
-    public IRequestResult<GetByIdDetailsForUpdatePhoneProductResponse> productDetails;
+    private IRequestResult<GetByIdDetailsForUpdatePhoneProductResponse> productDetails;
 
     protected override async Task OnInitializedAsync()
     {
         LoadingAction(true);
-
 
         productDetails = await _phoneProductService.GetByIdDetailsForUpdate(Int32.Parse(ProductId));
 
@@ -212,7 +210,7 @@
         LoadingAction(false);
 
     }
-    async void SelectBrand(int id, string name)
+    private async void SelectBrand(int id, string name)
     {
         addPhoneBrandDto.Id = id;
         addPhoneBrandDto.Name = name;
@@ -225,7 +223,7 @@
         StateHasChanged();
     }
 
-    async void SelectModel(int id, string name)
+    private async void SelectModel(int id, string name)
     {
         addPhoneModelDto.Id = id;
         addPhoneModelDto.Name = name;
@@ -239,7 +237,7 @@
         StateHasChanged();
     }
 
-    void ClearModel()
+    private void ClearModel()
     {
         addPhoneModelDto.Id = NullValue;
         addPhoneModelDto.Name = string.Empty;
@@ -248,7 +246,7 @@
         ClearPhoneRAM();
     }
 
-    async void SelectInternalMemory(int id, string capacity)
+    private async void SelectInternalMemory(int id, string capacity)
     {
         addPhoneInternalMemoryDto.Id = id;
         addPhoneInternalMemoryDto.Capacity = capacity;
@@ -260,7 +258,7 @@
 
         StateHasChanged();
     }
-    void ClearInternalMemory()
+    private void ClearInternalMemory()
     {
         addPhoneInternalMemoryDto.Id = NullValue;
         addPhoneInternalMemoryDto.Capacity = string.Empty;
@@ -268,23 +266,23 @@
         ClearPhoneRAM();
     }
 
-    void SelectPhoneRAM(int id, string memory)
+    private void SelectPhoneRAM(int id, string memory)
     {
         addPhoneRAMDto.Id = id;
         addPhoneRAMDto.Memory = memory;
     }
 
-    void ClearPhoneRAM()
+    private void ClearPhoneRAM()
     {
         addPhoneRAMDto.Id = NullValue;
         addPhoneRAMDto.Memory = string.Empty;
     }
-    void SelectColor(int id, string name)
+    private void SelectColor(int id, string name)
     {
         ColorId = id;
     }
 
-    void SelectUsageStatus(bool isUsed)
+    private void SelectUsageStatus(bool isUsed)
     {
         UsageStatus = isUsed;
     }

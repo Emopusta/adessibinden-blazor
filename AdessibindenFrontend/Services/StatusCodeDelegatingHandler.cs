@@ -3,35 +3,32 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net;
 
-namespace AdessibindenFrontend.Services
+namespace AdessibindenFrontend.Services;
+
+public class StatusCodeDelegatingHandler : DelegatingHandler
 {
-    public class StatusCodeDelegatingHandler : DelegatingHandler
+    private readonly NavigationManager _navigationManager;
+    private readonly IJSRuntime _jsRuntime;
+
+    public StatusCodeDelegatingHandler(NavigationManager navigationManager, IJSRuntime jsRuntime)
     {
-        NavigationManager _navigationManager;
-        private readonly IJSRuntime _jsRuntime;
+        _navigationManager = navigationManager;
+        _jsRuntime = jsRuntime;
+    }
 
-        public StatusCodeDelegatingHandler(NavigationManager navigationManager, IJSRuntime jsRuntime)
-        {
-            _navigationManager = navigationManager;
-            _jsRuntime = jsRuntime;
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        var response = await base.SendAsync(request, cancellationToken);
+        if (response.StatusCode == HttpStatusCode.Unauthorized) {
+            await IJSRuntimeExtension.ToastrError(_jsRuntime, "You need to login.");
+            _navigationManager.NavigateTo("login");
+            throw new Exception("Unauthorized");
         }
-
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        if (response.StatusCode == HttpStatusCode.Forbidden)
         {
-            
-            var response = await base.SendAsync(request, cancellationToken);
-            if (response.StatusCode == HttpStatusCode.Unauthorized) {
-                await IJSRuntimeExtension.ToastrError(_jsRuntime, "You need to login.");
-                _navigationManager.NavigateTo("login");
-                throw new Exception("Unauthorized");
-            }
-            if (response.StatusCode == HttpStatusCode.Forbidden)
-            {
-                await IJSRuntimeExtension.ToastrError(_jsRuntime,"You are not authorized");
-                throw new Exception("Forbidden");
-            }
-            return response;
+            await IJSRuntimeExtension.ToastrError(_jsRuntime,"You are not authorized");
+            throw new Exception("Forbidden");
         }
-
+        return response;
     }
 }

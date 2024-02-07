@@ -1,10 +1,9 @@
 ﻿using AdessibindenFrontend.Shared;
 
-namespace AdessibindenFrontend.Services.Dtos
+namespace AdessibindenFrontend.Services.Dtos;
+
+public class GetByCreatorUserIdPaginatedDto : IResponse
 {
-    public class GetByCreatorUserIdPaginatedDto : IResponse
-    {
-        public string Title { get; set; }
-        public int ProductId { get; set; }
-    }
+    public string Title { get; set; }
+    public int ProductId { get; set; }
 }

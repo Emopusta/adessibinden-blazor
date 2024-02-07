@@ -1,4 +1,5 @@
 ﻿@page "/user-created-products"
+
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Results
@@ -68,11 +69,9 @@
         HasPrevious = products.Data.HasPrevious;
         HasNext = products.Data.HasNext;
 
-
         isLoadSuccess = products.Success;
 
         LoadingAction(false);
-
     }
 
     private async void UpdateProducts()
@@ -81,5 +80,4 @@
         products = await _productService.GetByCreatorUserIdPaginated(pageRequest, CurrentUserId);
         StateHasChanged();
     }
-   
 }

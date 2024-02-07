@@ -1,17 +1,19 @@
 ﻿@page "/user-profile"
+
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Responses
 @using AdessibindenFrontend.Services.Results
 @using Microsoft.AspNetCore.Authorization
+
 @inject IUserProfileService _userProfileService
 @inject IAuthService _authService
 @inject NavigationManager navigationManager
+
 @attribute [Authorize]
 
 @if (!Loading)
-{
-    
+{ 
     @if (isProfileLoaded)
     {
     
@@ -50,11 +52,8 @@
             <button class="btn btn-primary w-25 mt-5 py-2 btn-primary" type="submit">Create</button>
         </EditForm>
         </div>
-
     }
-
 }
-
 
 @code {
     [CascadingParameter]
@@ -94,7 +93,6 @@
         }
         Loading = false;
 
-
         LoadingAction(false);
     }
     private async Task CreateProfile()
@@ -112,7 +110,6 @@
     private async Task UpdateProfile()
     {
         SetDto(userProfileResponse);
-
         updatedUserProfileResponse = await _userProfileService.UpdateProfile(updateUserProfileDto);
     }
 

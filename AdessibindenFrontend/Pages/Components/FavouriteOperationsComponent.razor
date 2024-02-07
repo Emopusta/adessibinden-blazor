@@ -1,5 +1,5 @@
-﻿
-@using AdessibindenFrontend.Services.Abstract
+﻿@using AdessibindenFrontend.Services.Abstract
+
 @inject IUserFavouriteProductService _userFavouriteProductService
 @inject IAuthService _authService
 
@@ -21,7 +21,6 @@
             </svg>
         </span>
     }
-
 </div>
 
 @code {
@@ -32,7 +31,6 @@
     public int ProductId { get; set; }
 
     public int CurrentUserId { get; set; } 
-
     private bool isFavourite { get; set; }
 
     protected async override Task OnInitializedAsync()
@@ -44,12 +42,10 @@
         CheckIsFavourite();
 
         LoadingAction(false);
-
     }
 
     private async void AddToFavourites()
     {
-
         isFavourite = true;
         var result = await _userFavouriteProductService.AddFavourites(new Services.Dtos.CreateUserFavouriteProductDto() { ProductId = ProductId, UserId = CurrentUserId });
         StateHasChanged();

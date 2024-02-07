@@ -10,7 +10,6 @@
 
 <div class="container-fluid">
     <h1 class="text-center mt-5">Register</h1>
-
     <EditForm Model="registerDto" OnValidSubmit="RegisterUser" class="w-25 m-auto mt-5">
         <div class="form-floating">
             <InputText @bind-Value="updateUserProfileDto.FirstName" id="firstName" placeholder="First Name..." class="form-control mb-2" />
@@ -34,7 +33,6 @@
         </div>
 
         <button class="btn btn-primary w-100 py-2 btn-success" type="submit">Sign up</button>
-        
     </EditForm>
 </div>
 
@@ -58,6 +56,5 @@
         {
             throw new Exception("Passwords don't match");
         }
-
     }
 }

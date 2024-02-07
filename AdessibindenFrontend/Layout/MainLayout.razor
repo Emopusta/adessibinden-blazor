@@ -10,6 +10,7 @@
                     @Body
                     </CascadingValue>
                 </ChildContent>
+
                 <ErrorContent>
                     <div class="row">
                         <div class="col-4"></div>
@@ -25,8 +26,8 @@
         </article>
     </main>
 
-
-@code{
+@code
+{
     private CustomErrorBoundary errorBoundary;
 
     bool loadingVisible { get; set; }
@@ -42,5 +43,4 @@
         loadingVisible = isLoading;
         StateHasChanged();
     }
-
-    }
+}

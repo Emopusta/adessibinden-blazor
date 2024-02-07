@@ -1,6 +1,4 @@
-﻿namespace AdessibindenFrontend.Shared
-{
-    public interface IResponse
-    {
-    }
-}
+﻿namespace AdessibindenFrontend.Shared;
+
+public interface IResponse { }
+

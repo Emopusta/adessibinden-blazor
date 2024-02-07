@@ -1,11 +1,9 @@
 ﻿using AdessibindenFrontend.Shared;
 
-namespace AdessibindenFrontend.Services.Responses
-{
-    public class CreatedUserFavouriteProductResponse : IResponse
-    {
-        public int ProductId { get; set; }
+namespace AdessibindenFrontend.Services.Responses;
 
-        public int UserId { get; set; }
-    }
+public class CreatedUserFavouriteProductResponse : IResponse
+{
+    public int ProductId { get; set; }
+    public int UserId { get; set; }
 }

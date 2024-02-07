@@ -1,8 +1,8 @@
 ﻿@using AdessibindenFrontend.Services.Abstract
+
 @inject IPhoneProductService _phoneProductService
 @inject IAuthService _authService
 @inject NavigationManager _navigationManager
-
 
 @if(CurrentUserId == CreatorUserId)
 {
@@ -21,8 +21,8 @@
     public int ProductId { get; set; }
 
     public int CurrentUserId { get; set; }
-
     public int CreatorUserId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         LoadingAction(true);

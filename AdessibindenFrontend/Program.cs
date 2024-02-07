@@ -10,9 +10,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-
 builder.Services.AddAPIServices();
-
 
 builder.Services.AddScoped<StatusCodeDelegatingHandler>();
 builder.Services.AddScoped<CookieHandler>();
@@ -32,7 +30,6 @@ builder.Services.AddScoped(sp =>
 .AddHttpMessageHandler<CookieHandler>();
 
 builder.Services.AddSingleton<ProductCategoryStateContainer>();
-
 
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 

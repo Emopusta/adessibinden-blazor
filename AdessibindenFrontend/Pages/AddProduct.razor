@@ -1,4 +1,5 @@
 ﻿@page "/add-product"
+
 @using AdessibindenFrontend.Core.Application.Responses
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Dtos
@@ -9,11 +10,11 @@
 @inject ProductCategoryStateContainer _productCategoryStateContainer
 
 <div class="container-fluid">
-@if (isLoadSuccess)
-{
-    <h3 class="text-center mt-5 mb-5">AddProduct</h3>
-    foreach (var category in productCategories.Data.Data)
+    @if (isLoadSuccess)
     {
+        <h3 class="text-center mt-5 mb-5">AddProduct</h3>
+        foreach (var category in productCategories.Data.Data)
+        {
         <div class="w-25 m-auto mt-2 ">
             <div class="card border-primary mb-3" >
                     <NavLink class="nav-link text-white" href="@($"/add-product/{category.Name.ToLower()}")" @onclick="() => {productCategoryDto.Id = category.Id; productCategoryDto.Name = category.Name; _productCategoryStateContainer.SetValue(productCategoryDto);}">
@@ -25,7 +26,6 @@
         </div>
         }
     }
-
 </div>
 
 @code {
@@ -43,10 +43,8 @@
         LoadingAction(true);
 
         productCategories = await _productCategoryService.GetAll();
-
         isLoadSuccess = productCategories.Success;
 
         LoadingAction(false);
-
     }
 }

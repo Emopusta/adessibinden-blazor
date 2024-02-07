@@ -1,21 +1,20 @@
 ﻿using AdessibindenFrontend.Shared;
 
-namespace AdessibindenFrontend.Services.Responses
+namespace AdessibindenFrontend.Services.Responses;
+
+public class RevokedTokenResponse : IResponse
 {
-    public class RevokedTokenResponse : IResponse
+    public int Id { get; set; }
+    public string Token { get; set; }
+
+    public RevokedTokenResponse()
     {
-        public int Id { get; set; }
-        public string Token { get; set; }
+        Token = string.Empty;
+    }
 
-        public RevokedTokenResponse()
-        {
-            Token = string.Empty;
-        }
-
-        public RevokedTokenResponse(int id, string token)
-        {
-            Id = id;
-            Token = token;
-        }
+    public RevokedTokenResponse(int id, string token)
+    {
+        Id = id;
+        Token = token;
     }
 }

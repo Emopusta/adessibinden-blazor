@@ -2,11 +2,9 @@
 using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 
-namespace AdessibindenFrontend.Services.Abstract
+namespace AdessibindenFrontend.Services.Abstract;
+
+public interface IColorService
 {
-    public interface IColorService
-    {
-        public Task<RequestResult<PaginateResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize);
-    
-    }
+    public Task<RequestResult<PaginateResponse<GetAllColorsListItemDto>>> GetAll(int pageIndex, int pageSize);
 }

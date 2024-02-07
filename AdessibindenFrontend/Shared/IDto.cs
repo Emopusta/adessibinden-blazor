@@ -1,6 +1,4 @@
-﻿namespace AdessibindenFrontend.Shared
-{
-    public interface IDto
-    {
-    }
-}
+﻿namespace AdessibindenFrontend.Shared;
+
+public interface IDto { }
+

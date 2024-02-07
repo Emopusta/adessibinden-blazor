@@ -1,4 +1,5 @@
 ﻿@page "/search"
+
 @using AdessibindenFrontend.Core.Application.Requests
 @using AdessibindenFrontend.Core.Application.Responses
 @using AdessibindenFrontend.Services.Abstract
@@ -6,9 +7,9 @@
 @using AdessibindenFrontend.Services.Results
 @using Microsoft.AspNetCore.Authorization
 
-@attribute [Authorize]
-
 @inject IProductService _productService
+
+@attribute [Authorize]
 
     <div class="row">
         <div class="col-3">
@@ -23,26 +24,24 @@
             
         </div>
         <div class="col-9">
-
-    @if (isLoadSuccess)
-    {
-    <h2 class="text-center fw-bold">SearchProduct</h2>
-            <div class="container row">
-          @foreach (var product in products.Data.Items)
+            @if (isLoadSuccess)
             {
-                <div class="card m-3 col-3" style="width: 18rem;">
-                    <img class="card-img-top" src="adesso.png" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">@product.Title</h5>
-                        <p class="card-text text-truncate">@product.Description</p>
-                        <a href="@($"/phone-product/{@product.Id}")" class="btn btn-primary">Details</a>
+            <h2 class="text-center fw-bold">SearchProduct</h2>
+                <div class="container row">
+                @foreach (var product in products.Data.Items)
+                {
+                    <div class="card m-3 col-3" style="width: 18rem;">
+                        <img class="card-img-top" src="adesso.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Title</h5>
+                            <p class="card-text text-truncate">@product.Description</p>
+                            <a href="@($"/phone-product/{@product.Id}")" class="btn btn-primary">Details</a>
+                        </div>
                     </div>
+                } 
                 </div>
-            } 
-    </div>
-    }
+            }
         </div>
-
     </div>
 
 @code {
@@ -65,7 +64,6 @@
         isLoadSuccess = products.Success;
 
         LoadingAction(false);
-
     }
 
     private async void SearchPhoneProduct()

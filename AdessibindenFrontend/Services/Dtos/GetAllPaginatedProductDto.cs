@@ -1,9 +1,4 @@
-﻿using AdessibindenFrontend.Shared;
+﻿namespace AdessibindenFrontend.Services.Dtos;
 
-namespace AdessibindenFrontend.Services.Dtos
-{
-    public class GetAllPaginatedProductDto : PaginatedProductDto
-    {
+public class GetAllPaginatedProductDto : PaginatedProductDto { }
 
-    }
-}

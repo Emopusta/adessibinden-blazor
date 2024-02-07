@@ -1,11 +1,14 @@
 ﻿@page "/logout"
+
 @using AdessibindenFrontend.Services.Abstract
 @using Microsoft.AspNetCore.Authorization
+
 @attribute [Authorize]
 
 @code {
     [Inject]
     public IAuthService _authService { get; set; }
+
     [Inject]
     public NavigationManager _navigationManager { get; set; }
 

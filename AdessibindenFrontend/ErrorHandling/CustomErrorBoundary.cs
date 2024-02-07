@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 
-namespace AdessibindenFrontend.ErrorHandling
+namespace AdessibindenFrontend.ErrorHandling;
+
+public class CustomErrorBoundary : ErrorBoundary
 {
-    public class CustomErrorBoundary : ErrorBoundary
+    protected override Task OnErrorAsync(Exception exception)
     {
-        protected override Task OnErrorAsync(Exception exception)
-        {
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

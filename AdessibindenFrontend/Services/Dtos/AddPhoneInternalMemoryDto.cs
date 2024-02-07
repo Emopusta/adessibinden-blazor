@@ -1,10 +1,9 @@
 ﻿using AdessibindenFrontend.Shared;
 
-namespace AdessibindenFrontend.Services.Dtos
+namespace AdessibindenFrontend.Services.Dtos;
+
+public class AddPhoneInternalMemoryDto : IDto
 {
-    public class AddPhoneInternalMemoryDto : IDto
-    {
-        public int Id { get; set; }
-        public string Capacity { get; set; }
-    }
+    public int Id { get; set; }
+    public string Capacity { get; set; }
 }

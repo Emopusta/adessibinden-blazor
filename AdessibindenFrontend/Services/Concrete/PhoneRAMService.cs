@@ -4,22 +4,21 @@ using AdessibindenFrontend.Services.Dtos;
 using AdessibindenFrontend.Services.Results;
 using System.Net.Http.Json;
 
-namespace AdessibindenFrontend.Services.Concrete
+namespace AdessibindenFrontend.Services.Concrete;
+
+public class PhoneRAMService : IPhoneRAMService
 {
-    public class PhoneRAMService : IPhoneRAMService
+    private readonly HttpClient _httpClient;
+
+    public PhoneRAMService(HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+    }
 
-        public PhoneRAMService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
-
-        public async Task<IRequestResult<ListResponse<GetAllListPhoneRAMDto>>> GetAll()
-        {
-            var response = await _httpClient.GetAsync($"/api/PhoneRAMs");
-            var result = response.Content.ReadFromJsonAsync<RequestResult<ListResponse<GetAllListPhoneRAMDto>>>().Result;
-            return result;
-        }
+    public async Task<IRequestResult<ListResponse<GetAllListPhoneRAMDto>>> GetAll()
+    {
+        var response = await _httpClient.GetAsync($"/api/PhoneRAMs");
+        var result = response.Content.ReadFromJsonAsync<RequestResult<ListResponse<GetAllListPhoneRAMDto>>>().Result;
+        return result;
     }
 }
