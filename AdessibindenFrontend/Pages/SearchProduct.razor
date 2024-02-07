@@ -4,8 +4,12 @@
 @using AdessibindenFrontend.Services.Abstract
 @using AdessibindenFrontend.Services.Dtos
 @using AdessibindenFrontend.Services.Results
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 @inject IProductService _productService
+
     <div class="row">
         <div class="col-3">
           
