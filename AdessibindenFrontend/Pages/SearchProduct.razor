@@ -9,7 +9,7 @@
 
 @inject IProductService _productService
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 
     <div class="row">
         <div class="col-3">

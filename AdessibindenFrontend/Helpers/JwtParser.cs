@@ -13,7 +13,17 @@ public static class JwtParser
         var jsonBytes = ParseBase64WithoutPadding(payload);
 
         var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-        claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+        claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()))
+            .Where(p => !p.Type.Equals(ClaimTypes.Role)));
+
+        var roleClaimKeyValuePair = keyValuePairs.Select(p => p)
+            .FirstOrDefault(kvp => kvp.Key.Equals(ClaimTypes.Role));
+        if (roleClaimKeyValuePair.Key != null && roleClaimKeyValuePair.Value != null)
+        {
+            var roles = JsonSerializer.Deserialize<List<string>>(roleClaimKeyValuePair.Value.ToString());
+            roles.ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
+        }
+
         return claims;
     }
 

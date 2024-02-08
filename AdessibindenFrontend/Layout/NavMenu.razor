@@ -12,55 +12,59 @@
                     <li class="nav-item ms-2 me-2 p-0">
                         <NavLink class="nav-link text-white" aria-current="page" href="#">Home</NavLink>
                     </li>
-                    <AuthorizeView>
+                    <AuthorizeView Context="User">
                         <Authorized>
                             <li class="nav-item ms-2 me-2 p-0">
                                 <NavLink class="nav-link text-white" href="counter">Counter</NavLink>
                             </li>
                             <li class="nav-item p-0">
-                                    <div class="flex-shrink-0 dropdown ms-1">
-                                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle ps-2 pe-2" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Profile
-                                        </a>
-                                        <ul class="dropdown-menu text-small shadow" style="">
-                                                <li class="nav-item p-0 me-2">
-                                                    <NavLink class="nav-link text-white" href="user-profile">
-                                                        <span class="p-2">
-                                                            Settings
-                                                        </span>
-                                                    </NavLink>
-                                                </li>
-                                        <li class="nav-item p-0 me-2">
-                                            <NavLink class="nav-link text-white" href="favourite-products">
-                                                <span class="p-2">
-                                                    Favourites
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                        <li class="nav-item p-0 me-2">
-                                            <NavLink class="nav-link text-white" href="user-created-products">
-                                                <span class="p-2">
-                                                    My Products
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                        <li class="nav-item p-0 me-2">
-                                            <NavLink class="nav-link text-white" href="add-product">
-                                                <span class="p-2">
-                                                    Add Product
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                                <li class="nav-item p-0 me-2">
-                                                    <NavLink class="nav-link text-white" href="logout">
-                                                        <span class="p-2">
-                                                            Logout
-                                                        </span>
-                                                    </NavLink>
-                                                </li>
-                                        </ul>
-                                    </div>               
+                                <div class="flex-shrink-0 dropdown ms-1">
+                                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle ps-2 pe-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Profile
+                                    </a>
+                                    <ul class="dropdown-menu text-small shadow" style="">
+                                            <li class="nav-item p-0 me-2">
+                                                <NavLink class="nav-link text-white" href="user-profile">
+                                                    <span class="p-2">
+                                                        Settings
+                                                    </span>
+                                                </NavLink>
+                                            </li>
+                                    <li class="nav-item p-0 me-2">
+                                        <NavLink class="nav-link text-white" href="favourite-products">
+                                            <span class="p-2">
+                                                Favourites
+                                            </span>
+                                        </NavLink>
+                                    </li>
+                                    <li class="nav-item p-0 me-2">
+                                        <NavLink class="nav-link text-white" href="user-created-products">
+                                            <span class="p-2">
+                                                My Products
+                                            </span>
+                                        </NavLink>
+                                    </li>
+                                    <AuthorizeView Roles="Admin" Context="Admin">
+                                        <Authorized>
+                                            <li class="nav-item p-0 me-2">
+                                                <NavLink class="nav-link text-white" href="add-product">
+                                                    <span class="p-2">
+                                                        Add Product
+                                                    </span>
+                                                </NavLink>
+                                            </li>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="nav-item p-0 me-2">
+                                        <NavLink class="nav-link text-white" href="logout">
+                                            <span class="p-2">
+                                                Logout
+                                            </span>
+                                        </NavLink>
+                                    </li>
+                                    </ul>
+                                </div>               
                             </li>
                         </Authorized>
                         <NotAuthorized>
