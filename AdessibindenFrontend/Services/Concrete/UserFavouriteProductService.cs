@@ -38,7 +38,7 @@ public class UserFavouriteProductService : IUserFavouriteProductService
 
     public async Task<IRequestResult<ListResponse<GetByUserIdUserFavouriteProductResponse>>> GetByUserIdUserFavouriteProducts(int userId)
     {
-        var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByUserId?UserId={userId}");
+        var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByUserId/{userId}");
         var result = response.Content.ReadFromJsonAsync<RequestResult<ListResponse<GetByUserIdUserFavouriteProductResponse>>>().Result;
         return result;
     }
