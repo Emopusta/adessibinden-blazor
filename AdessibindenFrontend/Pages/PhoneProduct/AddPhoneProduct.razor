@@ -47,7 +47,7 @@
         <div class="border border-2 border-light shadow w-75 m-auto mt-3 row">
             <div class="col-3">
                 <h5 class="text-center m-auto">Brand</h5>
-                @foreach (var brand in phoneBrands.Data.Data)
+                @foreach (var brand in phoneBrands.Data.Items)
                     {
                     <div class="my-3 p-2">
                         <div class="form-check">
@@ -61,8 +61,8 @@
                 @if (addPhoneBrandDto.Id != NullValue && isPhoneModelsLoaded)
                 {
                     <h5 class="text-center m-auto">Model</h5>
-                    
-                    @foreach (var model in phoneModels.Data.Data)
+
+                    @foreach (var model in phoneModels.Data.Items)
                         {
                         <div class="my-3 p-2">
                             <div class="form-check">
@@ -78,7 +78,7 @@
                 {
                     <h5 class="text-center m-auto">Internal Memory</h5>
 
-                    @foreach (var internalMemory in phoneInternalMemories.Data.Data)
+                    @foreach (var internalMemory in phoneInternalMemories.Data.Items)
                     {
                         <div class="my-3 p-2">
                             <div class="form-check">
@@ -95,7 +95,7 @@
                 {
                     <h5 class="text-center m-auto">RAM</h5>
 
-                    foreach (var RAM in phoneRAMs.Data.Data)
+                    foreach (var RAM in phoneRAMs.Data.Items)
                     {
                         
                         <div class="my-3 p-2">

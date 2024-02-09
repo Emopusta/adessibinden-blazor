@@ -2,11 +2,11 @@
 
 public class ListResponse<T>
 {
-    public IList<T> Data
+    public IList<T> Items
     {
-        get => _data ??= new List<T>();
-        set => _data = value;
+        get => _items ??= new List<T>();
+        set => _items = value;
     }
 
-    private IList<T>? _data;
+    private IList<T>? _items;
 }
