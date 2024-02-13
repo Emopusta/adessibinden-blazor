@@ -3,7 +3,7 @@
     <NavMenu />
     <main>
         <article class="content px-4">
-            <CustomErrorBoundary @ref="errorBoundary"> @* buna benzer loading için *@
+            <CustomErrorBoundary @ref="errorBoundary">
                 <ChildContent>
                     <LoadingLayout Visible="@loadingVisible"></LoadingLayout>
                     <CascadingValue Value="@Loading" TValue="Action<bool>">
@@ -35,7 +35,6 @@
     protected override void OnInitialized()
     {
         errorBoundary = new CustomErrorBoundary();
-
     }
 
     public void Loading(bool isLoading)
