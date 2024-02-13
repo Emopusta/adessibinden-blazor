@@ -31,14 +31,14 @@ public class UserFavouriteProductService : IUserFavouriteProductService
 
     public async Task<IRequestResult<GetByProductAndUserIdUserFavouriteProductResponse>> GetCurrentFavouriteByUserIdAndProductId(GetByProductAndUserIdFavouriteProductDto getByProductAndUserIdFavouriteProductDto)
     {
-        var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByProductIdAndUserId/{getByProductAndUserIdFavouriteProductDto.UserId}/{getByProductAndUserIdFavouriteProductDto.ProductId}");
+        var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByProductIdAndUserId?UserId={getByProductAndUserIdFavouriteProductDto.UserId}&ProductId={getByProductAndUserIdFavouriteProductDto.ProductId}");
         var result = response.Content.ReadFromJsonAsync<RequestResult<GetByProductAndUserIdUserFavouriteProductResponse>>().Result;
         return result;
     }
 
     public async Task<IRequestResult<ListResponse<GetByUserIdUserFavouriteProductResponse>>> GetByUserIdUserFavouriteProducts(int userId)
     {
-        var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByUserId/{userId}");
+        var response = await _httpClient.GetAsync($"/api/UserFavouriteProducts/GetByUserId?UserId={userId}");
         var result = response.Content.ReadFromJsonAsync<RequestResult<ListResponse<GetByUserIdUserFavouriteProductResponse>>>().Result;
         return result;
     }

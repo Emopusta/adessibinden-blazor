@@ -17,7 +17,7 @@ public class PhoneModelService : IPhoneModelService
 
     public async Task<IRequestResult<ListResponse<GetByBrandIdPhoneModelDto>>> GetByBrandId(int brandId)
     {
-        var response = await _httpClient.GetAsync($"/api/PhoneModels/{brandId}");
+        var response = await _httpClient.GetAsync($"/api/PhoneModels/GetByBrandId?BrandId={brandId}");
         var result = response.Content.ReadFromJsonAsync<RequestResult<ListResponse<GetByBrandIdPhoneModelDto>>>().Result;
         return result;
     }

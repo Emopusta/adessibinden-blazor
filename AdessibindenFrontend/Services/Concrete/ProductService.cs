@@ -18,7 +18,7 @@ public class ProductService : IProductService
 
     public async Task<IRequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>>> GetByCreatorUserIdPaginated(PageRequest pageRequest, int creatorUserId)
     {
-        var response = await _httpClient.GetFromJsonAsync<RequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>>>($"/api/Products/GetByCreator/{creatorUserId}?PageIndex={pageRequest.PageIndex}&PageSize={pageRequest.PageSize}");
+        var response = await _httpClient.GetFromJsonAsync<RequestResult<PaginateResponse<GetByCreatorUserIdPaginatedDto>>>($"/api/Products/GetByCreator?CreatorUserId={creatorUserId}&PageIndex={pageRequest.PageIndex}&PageSize={pageRequest.PageSize}");
             return response;
     }
 

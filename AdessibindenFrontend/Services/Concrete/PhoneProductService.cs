@@ -33,14 +33,14 @@ public class PhoneProductService : IPhoneProductService
 
     public async Task<IRequestResult<GetByIdDetailsPhoneProductResponse>> GetByIdDetails(int productId)
     {
-        var response = await _httpClient.GetAsync($"/api/PhoneProducts/{productId}");
+        var response = await _httpClient.GetAsync($"/api/PhoneProducts?ProductId={productId}");
         var result = response.Content.ReadFromJsonAsync<RequestResult<GetByIdDetailsPhoneProductResponse>>().Result;
         if (!result.Success) { _navigationManager.NavigateTo("/not-found"); }
         return result;
     }
     public async Task<IRequestResult<GetByIdDetailsForUpdatePhoneProductResponse>> GetByIdDetailsForUpdate(int productId)
     {
-        var response = await _httpClient.GetAsync($"/api/PhoneProducts/UpdateDetails/{productId}");
+        var response = await _httpClient.GetAsync($"/api/PhoneProducts/UpdateDetails?ProductId={productId}");
         var result = response.Content.ReadFromJsonAsync<RequestResult<GetByIdDetailsForUpdatePhoneProductResponse>>().Result;
         if (!result.Success) { _navigationManager.NavigateTo("/not-found"); }
         return result;
