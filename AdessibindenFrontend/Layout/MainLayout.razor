@@ -18,7 +18,7 @@
                             <h3>
                                 @context.Message
                             </h3>
-                            <button class="btn btn-info float-end" @onclick="() => errorBoundary.Recover()">Continue</button>
+                            <button class="btn btn-info float-end" @onclick="() => {errorBoundary.Recover(); loadingVisible=false;}">Continue</button>
                         </div>
                     </div>
                 </ErrorContent>
