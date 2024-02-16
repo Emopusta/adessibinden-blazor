@@ -68,8 +68,12 @@
 
     private async void SearchPhoneProduct()
     {
+        LoadingAction(true);
+
         var pageRequest = new PageRequest() { PageSize = 10, PageIndex = 0 };
         products = await _productService.GetByTitlePaginated(pageRequest, TitleToSearch);
         StateHasChanged();
+
+        LoadingAction(false);
     }
 }
