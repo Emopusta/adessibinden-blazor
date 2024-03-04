@@ -16,11 +16,11 @@ public static class JwtParser
         claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()))
             .Where(p => !p.Type.Equals(ClaimTypes.Role)));
 
+        if (keyValuePairs.Any(p => p.Key.Equals(ClaimTypes.Role)))
+        {
         var roleClaims = keyValuePairs
             .FirstOrDefault(kvp => kvp.Key.Equals(ClaimTypes.Role)).Value.ToString();
 
-        if (roleClaims != null)
-        {
             var roles = JsonSerializer.Deserialize<List<string>>(roleClaims);
             roles.ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
         }
