@@ -95,6 +95,7 @@
 
         LoadingAction(false);
     }
+
     private async Task CreateProfile()
     {
         var emptyUser = new CreateUserProfileDto() { UserId = UserId };
@@ -102,15 +103,11 @@
         RefreshPage();
     }
 
-    private void RefreshPage()
-    {
-        navigationManager.NavigateTo("/user-profile", true);
-    }
-
     private async Task UpdateProfile()
     {
         SetDto(userProfileResponse);
         updatedUserProfileResponse = await _userProfileService.UpdateProfile(updateUserProfileDto);
+        RefreshPage();
     }
 
     private void SetDto(IRequestResult<GetUserProfileResponse> userProfileResponse)
@@ -124,5 +121,11 @@
         {
             updateUserProfileDto.BirthDate = DateTime.SpecifyKind((DateTime)updateUserProfileDto.BirthDate, DateTimeKind.Utc);
         }
+
+    }
+
+    private void RefreshPage()
+    {
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 }
