@@ -104,6 +104,7 @@ public class AuthService : IAuthService
     public async Task<int> GetCurrentUserId()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        if (!authState.User.Identity.IsAuthenticated) { return 0; }
         var currentUserId = Int32.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
         return currentUserId;
     }
