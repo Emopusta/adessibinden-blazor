@@ -11,5 +11,6 @@ public interface IAuthService
     public Task<IRequestResult<RefreshedTokensResponse>> RefreshToken();
     public Task<RevokedTokenResponse> RevokeToken(string refreshToken);
     public Task<int> GetCurrentUserId();
+    public Task<bool> IsCurrentUserAuthenticated();
     public Task<string> GetCurrentUserEmail();
 }

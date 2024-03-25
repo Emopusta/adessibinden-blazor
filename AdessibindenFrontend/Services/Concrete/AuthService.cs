@@ -109,6 +109,12 @@ public class AuthService : IAuthService
         return currentUserId;
     }
 
+    public async Task<bool> IsCurrentUserAuthenticated()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        return authState.User.Identity.IsAuthenticated;
+    }
+
     public async Task<string> GetCurrentUserEmail()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
