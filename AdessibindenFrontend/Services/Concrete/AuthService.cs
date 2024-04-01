@@ -84,8 +84,11 @@ public class AuthService : IAuthService
     {
         var response = await _httpClient.PostAsJsonAsync("/api/Auth/Register", userForRegisterDto);
         var result = response.Content.ReadFromJsonAsync<RequestResult<RegisteredResponse>>().Result;
-        if (!result.Success) { throw new Exception(result.Error.Detail); }
-
+        if (!result.Success) {
+            if (result.Error.ValidationErrors != null) throw new Exception(result.Error.ValidationErrors.First().Errors.First());
+            else throw new Exception(result.Error.Detail);
+        }
+            
         ((AuthStateProvider)_authenticationStateProvider).NotifyUserLoggedIn(result.Data.AccessToken.Token);
 
         await _localStorageService.SetItemAsync("local_token", result.Data.AccessToken);
